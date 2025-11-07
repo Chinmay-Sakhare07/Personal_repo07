@@ -179,7 +179,6 @@ public class ManageCoursePanel extends javax.swing.JPanel {
         jLabel7.setForeground(new java.awt.Color(0, 102, 102));
         jLabel7.setText("Instructor");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Chinmay Sakhare", "Pranjal Patil", "Anisha Gaikar", "Swapnanil Bala", " " }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);

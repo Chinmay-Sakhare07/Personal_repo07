@@ -263,7 +263,6 @@ public class ManagePersonsJPanel extends javax.swing.JPanel {
             }
         });
 
-        comboType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Student", "Faculty" }));
         comboType.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboTypeActionPerformed(evt);

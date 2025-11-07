@@ -5,19 +5,145 @@
 package UserInterface.WorkAreas.AdminRole;
 
 import Business.Business;
+import Business.Person.Person;
+import Business.Profiles.EmployeeProfile;
+import Business.Profiles.FacultyProfile;
+import Business.Profiles.StudentProfile;
+import Business.UserAccounts.UserAccount;
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.regex.Pattern;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author pranjalpatil
  */
-public class ManagePersonsPanel extends javax.swing.JPanel {
+public class ManagePersonsJPanel extends javax.swing.JPanel {
 
-    /**
-     * Creates new form ManagePersonsPanel
-     */
-    public ManagePersonsPanel(Business business, JPanel cardPanel) {
+    private Business business;
+    private JPanel cardSequencePanel;
+    private Person selectedPerson;
+    private ArrayList<Person> displayedPersons;
+
+    public ManagePersonsJPanel(Business business, JPanel cardSequencePanel) {
+        this.business = business;
+        this.cardSequencePanel = cardSequencePanel;
+        this.displayedPersons = new ArrayList<>();
+
         initComponents();
+
+        setupUI();
+        loadAllPersons();
+    }
+
+    private void setupUI() {
+        comboType.removeAllItems();
+        comboType.addItem("Student");
+        comboType.addItem("Faculty");
+        comboType.addItem("Admin");
+        comboType.addItem("Registrar");
+
+        fieldID.setEditable(false);
+        fieldID.setBackground(new Color(220, 220, 220));
+        fieldID.setText("Auto-generated");
+
+        clearForm();
+    }
+
+    private void loadAllPersons() {
+        displayedPersons = business.getPersonDirectory().getPersonList();
+        populateTable(displayedPersons);
+    }
+
+    private void populateTable(ArrayList<Person> persons) {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+
+        for (Person person : persons) {
+            String type = getPersonType(person);
+            String extra = getPersonExtra(person);
+
+            Object[] row = new Object[5];
+            row[0] = person.getPersonId();
+            row[1] = person.getFullName();
+            row[2] = person.getEmail();
+            row[3] = type;
+            row[4] = extra;
+
+            model.addRow(row);
+        }
+
+        jTable1.setDefaultEditor(Object.class, null);
+
+        jTable1.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                onPersonSelected();
+            }
+        });
+    }
+
+    private String getPersonType(Person person) {
+        String personId = person.getPersonId();
+
+        if (business.getStudentDirectory().findStudent(personId) != null) {
+            return "Student";
+        } else if (business.getFacultyDirectory().findFacultyByPersonId(personId) != null) {
+            return "Faculty";
+        } else if (business.getEmployeeDirectory().findEmployee(personId) != null) {
+            return "Admin";
+        } else {
+            return "Person";
+        }
+    }
+
+    private String getPersonExtra(Person person) {
+        String personId = person.getPersonId();
+
+        StudentProfile student = business.getStudentDirectory().findStudent(personId);
+        if (student != null) {
+            return "Credits: " + student.getTranscript().getTotalCredits();
+        }
+
+        FacultyProfile faculty = business.getFacultyDirectory().findFacultyByPersonId(personId);
+        if (faculty != null) {
+            return "Courses: " + faculty.getOfferings().size();
+        }
+
+        return "N/A";
+    }
+
+    private void onPersonSelected() {
+        int selectedRow = jTable1.getSelectedRow();
+
+        if (selectedRow < 0) {
+            clearForm();
+            return;
+        }
+
+        selectedPerson = displayedPersons.get(selectedRow);
+        loadPersonIntoForm(selectedPerson);
+    }
+
+    private void loadPersonIntoForm(Person person) {
+        fieldID.setText(person.getPersonId());
+        fieldID1.setText(person.getFullName());
+        fieldID2.setText(person.getEmail());
+        fieldID5.setText(person.getDepartment() != null ? person.getDepartment() : "");
+
+        String type = getPersonType(person);
+        comboType.setSelectedItem(type);
+    }
+
+    private void clearForm() {
+        fieldID.setText("Auto-generated");
+        fieldID1.setText("");
+        fieldID2.setText("");
+        fieldID5.setText("");
+        comboType.setSelectedIndex(0);
+        selectedPerson = null;
     }
 
     /**
@@ -51,10 +177,10 @@ public class ManagePersonsPanel extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
-        jButton5 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnAdd = new javax.swing.JButton();
+        btnUpdate = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
+        btnClear = new javax.swing.JButton();
 
         jPanel3.setBackground(new java.awt.Color(0, 102, 102));
 
@@ -172,7 +298,6 @@ public class ManagePersonsPanel extends javax.swing.JPanel {
                             .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addComponent(lblName)
                                 .addGap(8, 8, 8)))
-                        .addGap(18, 18, 18)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(fieldID)
                             .addComponent(fieldID1)
@@ -220,6 +345,11 @@ public class ManagePersonsPanel extends javax.swing.JPanel {
         });
 
         btnSearch.setText("Search");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -273,31 +403,31 @@ public class ManagePersonsPanel extends javax.swing.JPanel {
 
         jPanel1.setBackground(new java.awt.Color(0, 204, 204));
 
-        jButton5.setText("Add");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        btnAdd.setText("Add");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                btnAddActionPerformed(evt);
             }
         });
 
-        jButton3.setText("Update");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnUpdate.setText("Update");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnUpdateActionPerformed(evt);
             }
         });
 
-        jButton4.setText("Delete");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        btnDelete.setText("Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btnDeleteActionPerformed(evt);
             }
         });
 
-        jButton1.setText("Clear");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnClear.setText("Clear");
+        btnClear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnClearActionPerformed(evt);
             }
         });
 
@@ -307,13 +437,13 @@ public class ManagePersonsPanel extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31))
         );
         jPanel1Layout.setVerticalGroup(
@@ -321,10 +451,10 @@ public class ManagePersonsPanel extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3)
-                    .addComponent(jButton5))
+                    .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnUpdate)
+                    .addComponent(btnAdd))
                 .addContainerGap(73, Short.MAX_VALUE))
         );
 
@@ -348,7 +478,11 @@ public class ManagePersonsPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
-        // TODO add your handling code here:
+        AdminWorkAreaPanel dashboard = new AdminWorkAreaPanel(business, cardSequencePanel);
+        cardSequencePanel.add(dashboard, "AdminDashboard");
+        ((java.awt.CardLayout) cardSequencePanel.getLayout()).show(cardSequencePanel, "AdminDashboard");
+        cardSequencePanel.revalidate();
+        cardSequencePanel.repaint();
     }//GEN-LAST:event_btnBackActionPerformed
 
     private void fieldIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldIDActionPerformed
@@ -375,36 +509,311 @@ public class ManagePersonsPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_fieldSearchActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        String name = fieldID1.getText().trim();
+        String email = fieldID2.getText().trim();
+        String type = (String) comboType.getSelectedItem();
+        String major = fieldID5.getText().trim();
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+        if (name.isEmpty() || email.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Name and Email are required fields",
+                    "Validation Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+        if (!isValidEmail(email)) {
+            JOptionPane.showMessageDialog(this,
+                    "Please enter a valid email address",
+                    "Invalid Email",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+        if (business.checkDuplicateEmail(email)) {
+            JOptionPane.showMessageDialog(this,
+                    "Email already exists in the system.\n"
+                    + "Please use a different email address.",
+                    "Duplicate Email",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
+        String[] nameParts = name.split(" ", 2);
+        String firstName = nameParts[0];
+        String lastName = nameParts.length > 1 ? nameParts[1] : "";
+
+        String newId = business.generateUniquePersonId();
+
+        int response = JOptionPane.showConfirmDialog(this,
+                "Register new person?\n\n"
+                + "ID: " + newId + "\n"
+                + "Name: " + name + "\n"
+                + "Email: " + email + "\n"
+                + "Type: " + type + "\n"
+                + "Department: " + (major.isEmpty() ? "N/A" : major),
+                "Confirm Registration",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+
+        if (response == JOptionPane.YES_OPTION) {
+            Person newPerson = business.getPersonDirectory().newPerson(
+                    newId, firstName, lastName, email, ""
+            );
+            newPerson.setDepartment(major.isEmpty() ? null : major);
+
+            String username = firstName.toLowerCase();
+            String password = "password";
+
+            switch (type) {
+                case "Student":
+                    StudentProfile studentProfile = business.getStudentDirectory().newStudentProfile(newPerson);
+                    business.getUserAccountDirectory().newUserAccount(studentProfile, username, password);
+                    break;
+
+                case "Faculty":
+                    FacultyProfile facultyProfile = business.getFacultyDirectory().newFacultyProfile(newPerson);
+                    facultyProfile.setDepartment(major);
+                    business.getUserAccountDirectory().newUserAccount(facultyProfile, username, password);
+                    break;
+
+                case "Admin":
+                    EmployeeProfile employeeProfile = business.getEmployeeDirectory().newEmployeeProfile(newPerson);
+                    business.getUserAccountDirectory().newUserAccount(employeeProfile, username, password);
+                    break;
+            }
+
+            JOptionPane.showMessageDialog(this,
+                    "Person registered successfully!\n\n"
+                    + "ID: " + newId + "\n"
+                    + "Username: " + username + "\n"
+                    + "Password: " + password + "\n\n"
+                    + "Please share these credentials with the user.",
+                    "Registration Successful",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+            clearForm();
+            loadAllPersons();
+        }
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        if (selectedPerson == null) {
+            JOptionPane.showMessageDialog(this,
+                    "Please select a person from the table to update",
+                    "No Selection",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String name = fieldID1.getText().trim();
+        String email = fieldID2.getText().trim();
+        String department = fieldID5.getText().trim();
+
+        if (name.isEmpty() || email.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Name and Email cannot be empty",
+                    "Validation Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (!isValidEmail(email)) {
+            JOptionPane.showMessageDialog(this,
+                    "Please enter a valid email address",
+                    "Invalid Email",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (!email.equals(selectedPerson.getEmail()) && business.checkDuplicateEmail(email)) {
+            JOptionPane.showMessageDialog(this,
+                    "Email already exists in the system",
+                    "Duplicate Email",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int response = JOptionPane.showConfirmDialog(this,
+                "Update person information?\n\n"
+                + "ID: " + selectedPerson.getPersonId() + "\n"
+                + "New Name: " + name + "\n"
+                + "New Email: " + email + "\n"
+                + "New Department: " + (department.isEmpty() ? "N/A" : department),
+                "Confirm Update",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+
+        if (response == JOptionPane.YES_OPTION) {
+            String[] nameParts = name.split(" ", 2);
+            selectedPerson.setFirstName(nameParts[0]);
+            selectedPerson.setLastName(nameParts.length > 1 ? nameParts[1] : "");
+            selectedPerson.setEmail(email);
+            selectedPerson.setDepartment(department.isEmpty() ? null : department);
+
+            String personType = getPersonType(selectedPerson);
+            if (personType.equals("Faculty")) {
+                FacultyProfile fp = business.getFacultyDirectory().findFacultyByPersonId(selectedPerson.getPersonId());
+                if (fp != null) {
+                    fp.setDepartment(department);
+                }
+            }
+
+            JOptionPane.showMessageDialog(this,
+                    "Person updated successfully!",
+                    "Update Successful",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+            loadAllPersons();
+            clearForm();
+        }
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        if (selectedPerson == null) {
+            JOptionPane.showMessageDialog(this,
+                    "Please select a person from the table to delete",
+                    "No Selection",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String personType = getPersonType(selectedPerson);
+        String personId = selectedPerson.getPersonId();
+
+        int response = JOptionPane.showConfirmDialog(this,
+                "Are you sure you want to delete this person?\n\n"
+                + "ID: " + personId + "\n"
+                + "Name: " + selectedPerson.getFullName() + "\n"
+                + "Type: " + personType + "\n\n"
+                + "This action cannot be undone!\n"
+                + "This will remove the person and their user account.",
+                "Confirm Delete",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE);
+
+        if (response == JOptionPane.YES_OPTION) {
+            switch (personType) {
+                case "Student":
+                    business.getStudentDirectory().removeStudent(personId);
+                    break;
+                case "Faculty":
+                    FacultyProfile fp = business.getFacultyDirectory().findFacultyByPersonId(personId);
+                    if (fp != null) {
+                        business.getFacultyDirectory().removeFaculty(fp);
+                    }
+                    break;
+                case "Admin":
+                    EmployeeProfile ep = business.getEmployeeDirectory().findEmployee(personId);
+                    if (ep != null) {
+                        business.getEmployeeDirectory().removeEmployee(ep);
+                    }
+                    break;
+            }
+
+            UserAccount ua = business.getUserAccountDirectory().findUserAccount(personId);
+            if (ua != null) {
+                business.getUserAccountDirectory().removeUserAccount(personId);
+            }
+
+            business.getPersonDirectory().removePerson(personId);
+
+            JOptionPane.showMessageDialog(this,
+                    "Person deleted successfully!",
+                    "Delete Successful",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+            clearForm();
+            loadAllPersons();
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
+        clearForm();
+        jTable1.clearSelection();
+        fieldSearch.setText("");
+
+        JOptionPane.showMessageDialog(this,
+                "Form cleared",
+                "Clear",
+                JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_btnClearActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        String searchTerm = fieldSearch.getText().trim();
+
+        if (searchTerm.isEmpty()) {
+            loadAllPersons();
+            JOptionPane.showMessageDialog(this,
+                    "Showing all persons",
+                    "Search Reset",
+                    JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        ArrayList<Person> searchResults = new ArrayList<>();
+        String searchLower = searchTerm.toLowerCase();
+
+        for (Person person : business.getPersonDirectory().getPersonList()) {
+            boolean match = false;
+
+            if (person.getPersonId().toLowerCase().contains(searchLower)) {
+                match = true;
+            }
+
+            if (person.getFullName().toLowerCase().contains(searchLower)) {
+                match = true;
+            }
+
+            if (person.getEmail() != null && person.getEmail().toLowerCase().contains(searchLower)) {
+                match = true;
+            }
+
+            if (person.getDepartment() != null && person.getDepartment().toLowerCase().contains(searchLower)) {
+                match = true;
+            }
+
+            if (match) {
+                searchResults.add(person);
+            }
+        }
+
+        displayedPersons = searchResults;
+        populateTable(searchResults);
+
+        if (searchResults.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "No persons found matching '" + searchTerm + "'",
+                    "No Results",
+                    JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Found " + searchResults.size() + " person(s)",
+                    "Search Results",
+                    JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_btnSearchActionPerformed
+
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        return pattern.matcher(email).matches();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnClear;
+    private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnSearch;
+    private javax.swing.JButton btnUpdate;
     private javax.swing.JComboBox<String> comboType;
     private javax.swing.JTextField fieldID;
     private javax.swing.JTextField fieldID1;
     private javax.swing.JTextField fieldID2;
     private javax.swing.JTextField fieldID5;
     private javax.swing.JTextField fieldSearch;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel6;

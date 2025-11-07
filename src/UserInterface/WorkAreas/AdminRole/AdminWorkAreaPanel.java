@@ -4,66 +4,46 @@
  */
 package UserInterface.WorkAreas.AdminRole;
 
-
 import java.awt.CardLayout;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import Business.Business;
-import UserInterface.WorkAreas.AdminRole.ManageStudentRecords;
-import UserInterface.WorkAreas.AdminRole.ManagePersonsPanel;
-import UserInterface.WorkAreas.AdminRole.ManageCoursePanel;
-
 
 /**
  *
  * @author pranjalpatil
  */
 public class AdminWorkAreaPanel extends javax.swing.JPanel {
-    
-            // ====== [ADDED] shared app context + card container ======
 
     private Business business;
 
     private JPanel cardPanel;
 
-
-
-    // ====== [ADDED] keep a no-arg ctor for NetBeans GUI builder ======
-
     public AdminWorkAreaPanel() {
 
-        initComponents();          // <-- your NetBeans-generated UI (UNCHANGED)
+        initComponents();  
 
-        
     }
 
-        public void setContext(Business business, JPanel cardPanel) {
+    public void setContext(Business business, JPanel cardPanel) {
         this.business = business;
         this.cardPanel = cardPanel;
     }
 
-
-
     // ====== [ADDED] overloaded ctor used by MainFrame ======
-
     /**
      * Creates new form AdminWorkAreaPanel
      */
     public AdminWorkAreaPanel(Business business, JPanel cardPanel) {
-        
-          this();                    // calls initComponents() + safePostInit()
+
+        this();               
 
         this.business = business;
 
         this.cardPanel = cardPanel;
 
-
-
         // optional: show app name on the header if the label exists
-
-
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -202,14 +182,14 @@ public class AdminWorkAreaPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-     
 
-    
     private void btnMngPersonsIdentifyResourceAssetsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMngPersonsIdentifyResourceAssetsActionPerformed
-        
-    ManagePersonsPanel next = new ManagePersonsPanel(business, cardPanel);
-        
-        showCard(new ManagePersonsPanel(business, cardPanel), "ManagePersons");
+
+        ManagePersonsJPanel panel = new ManagePersonsJPanel(business, cardPanel);
+        cardPanel.add(panel, "ManagePersons");
+        ((java.awt.CardLayout) cardPanel.getLayout()).show(cardPanel, "ManagePersons");
+        cardPanel.revalidate();
+        cardPanel.repaint();
     }//GEN-LAST:event_btnMngPersonsIdentifyResourceAssetsActionPerformed
 
     private void btnMngCoursesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMngCoursesActionPerformed
@@ -220,34 +200,30 @@ public class AdminWorkAreaPanel extends javax.swing.JPanel {
 
     private void btnMngAccActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMngAccActionPerformed
 
-            ManageStudentRecords next = new ManageStudentRecords(business, cardPanel);
+        ManageStudentRecords next = new ManageStudentRecords(business, cardPanel);
         showCard(new ManageStudentRecords(business, cardPanel), "ManageStudentsRecord");
 
- 
 
     }//GEN-LAST:event_btnMngAccActionPerformed
 
     private void btnLogoutIdentifyEventsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutIdentifyEventsActionPerformed
-             JOptionPane.showMessageDialog(this,
+        JOptionPane.showMessageDialog(this,
+                "Logged out successfully!");
 
-            "Logged out successfully!");
 
-    
     }//GEN-LAST:event_btnLogoutIdentifyEventsActionPerformed
 
     private void btnMngUsersIdentifyResourceAssetsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMngUsersIdentifyResourceAssetsActionPerformed
-    ManageUserAccountsJPanel next = new ManageUserAccountsJPanel(business, cardPanel);
+        ManageUserAccountsJPanel next = new ManageUserAccountsJPanel(business, cardPanel);
         showCard(new ManageUserAccountsJPanel(business, cardPanel), "ManageUsers");
     }//GEN-LAST:event_btnMngUsersIdentifyResourceAssetsActionPerformed
 
-    
-     private void showCard(javax.swing.JPanel panel, String name) {
+    private void showCard(javax.swing.JPanel panel, String name) {
 
         if (cardPanel == null) {
 
             JOptionPane.showMessageDialog(this,
-
-                "Card container not set. Make sure MainFrame creates this panel with (business, cardPanel).");
+                    "Card container not set. Make sure MainFrame creates this panel with (business, cardPanel).");
 
             return;
 
@@ -256,8 +232,7 @@ public class AdminWorkAreaPanel extends javax.swing.JPanel {
         if (!(cardPanel.getLayout() instanceof CardLayout)) {
 
             JOptionPane.showMessageDialog(this,
-
-                "Parent container must use CardLayout. Please check MainFrame.");
+                    "Parent container must use CardLayout. Please check MainFrame.");
 
             return;
 
@@ -269,7 +244,6 @@ public class AdminWorkAreaPanel extends javax.swing.JPanel {
 
     }
 
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogout;

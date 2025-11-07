@@ -41,7 +41,11 @@ public class EmployeeDirectory {
                 return sp;
             }
         }
-            return null;
-         }
-    
+        return null;
+    }
+
+    public boolean removeEmployee(EmployeeProfile ep) {
+        return employeelist.remove(ep);
+    }
+
 }

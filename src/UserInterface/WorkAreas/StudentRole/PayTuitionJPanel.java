@@ -35,7 +35,7 @@ public class PayTuitionJPanel extends javax.swing.JPanel {
         this.studentProfile = studentProfile;
         this.cardSequencePanel = cardSequencePanel;
 
-        currencyFormat = NumberFormat.getCurrencyInstance();
+        currencyFormat = NumberFormat.getCurrencyInstance(java.util.Locale.US);
         dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
         initComponents();

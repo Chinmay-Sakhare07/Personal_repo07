@@ -86,7 +86,7 @@ class ConfigureABusiness {
                     courses[i],
                     semester,
                     facultyProfiles[i], // Assign different faculty to each course
-                    30, // Capacity of 30 students
+                    7, // Capacity of 30 students
                     true // Enrollment open
             );
             business.getCourseDirectory().addOffering(offerings[i]);
@@ -94,10 +94,10 @@ class ConfigureABusiness {
         }
 
         
-        String[] studentFirstNames = {"Chinmay", "Bob", "Charlie", "Diana", "Ethan",
-            "Fiona", "George", "Hannah", "Ian", "Julia"};
-        String[] studentLastNames = {"Sakhare", "Baker", "Carter", "Davis", "Evans",
-            "Foster", "Green", "Harris", "Irwin", "Jackson"};
+        String[] studentFirstNames = {"Chinmay", "Shreya", "Agnel", "Pranav", "Rutuj",
+            "Swapnil", "Atul", "Pragati", "Vartika", "Parth"};
+        String[] studentLastNames = {"Sakhare", "Darban", "Salve", "Waghmare", "Bhise",
+            "Bala", "Tiwary", "Narote", "Singh", "Sonawane"};
 
         StudentProfile[] studentProfiles = new StudentProfile[10];
 
@@ -117,7 +117,7 @@ class ConfigureABusiness {
             business.getUserAccountDirectory().newUserAccount(
                     studentProfiles[i],
                     studentFirstNames[i].toLowerCase(),
-                    "password"
+                    "****"
             );
         }
 
@@ -135,11 +135,6 @@ class ConfigureABusiness {
         enrollStudentInCourse(studentProfiles[7], offerings[1]); // INFO6205
         enrollStudentInCourse(studentProfiles[7], offerings[2]); // INFO6150
 
-        enrollStudentInCourse(studentProfiles[8], offerings[3]); // INFO5001
-        enrollStudentInCourse(studentProfiles[8], offerings[4]); // INFO6350
-
-        enrollStudentInCourse(studentProfiles[9], offerings[0]); // INFO5100
-        enrollStudentInCourse(studentProfiles[9], offerings[3]); // INFO5001
 
         if (offerings[0].getEnrollments().size() > 0) {
             offerings[0].getEnrollments().get(0).assignGrade("A");   // Student 0

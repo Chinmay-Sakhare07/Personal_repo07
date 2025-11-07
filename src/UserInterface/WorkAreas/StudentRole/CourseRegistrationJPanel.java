@@ -5,6 +5,7 @@
 package UserInterface.WorkAreas.StudentRole;
 
 import Business.Business;
+import Business.Course.Course;
 import Business.Course.CourseOffering;
 import Business.Course.Enrollment;
 import Business.Profiles.CourseDirectory;
@@ -24,17 +25,20 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
     /**
      * Creates new form CourseRegistrationJPanel
      */
-    private ArrayList<CourseOffering> allOfferings;
+    private Business business;
     private StudentProfile studentProfile;
     private JPanel cardSequencePanel;
-    private Business business;
+    private ArrayList<CourseOffering> displayedCourses;
 
-    CourseRegistrationJPanel(Business business, StudentProfile studentProfile, JPanel cardSequencePanel) {
-
+    public CourseRegistrationJPanel(Business business, StudentProfile studentProfile, JPanel cardSequencePanel) {
         this.business = business;
         this.studentProfile = studentProfile;
         this.cardSequencePanel = cardSequencePanel;
+        this.displayedCourses = new ArrayList<>();
+
         initComponents();
+        initializeSearchFilter();
+        loadAllCourses();
     }
 
     /**
@@ -111,8 +115,8 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(76, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(56, 56, 56)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -120,21 +124,20 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
                         .addComponent(cmbFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(fieldSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(402, 402, 402)
-                                .addComponent(btnback, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                    .addGap(212, 212, 212)
-                                    .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnEnroll, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(72, 72, 72))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel1)
+                            .addGap(402, 402, 402)
+                            .addComponent(btnback, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGap(212, 212, 212)
+                                .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnEnroll, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(92, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -162,56 +165,150 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnbackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbackActionPerformed
-        CardLayout layout = (CardLayout) cardSequencePanel.getLayout();
-        layout.show(cardSequencePanel, "StudentWorkAreaJPanel");
+        StudentWorkAreaJPanel dashboard = new StudentWorkAreaJPanel(business, studentProfile, cardSequencePanel);
+        cardSequencePanel.add(dashboard, "StudentDashboard");
+        ((java.awt.CardLayout) cardSequencePanel.getLayout()).show(cardSequencePanel, "StudentDashboard");
+        cardSequencePanel.revalidate();
+        cardSequencePanel.repaint();
     }//GEN-LAST:event_btnbackActionPerformed
 
     private void btnEnrollActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnrollActionPerformed
         int selectedRow = tblCourses.getSelectedRow();
-        if (selectedRow < 0) {
-            JOptionPane.showMessageDialog(this, "Please select a course.");
+
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this,
+                    "Please select a course to enroll in",
+                    "No Course Selected",
+                    JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        DefaultTableModel model = (DefaultTableModel) tblCourses.getModel();
-        CourseOffering co = (CourseOffering) model.getValueAt(selectedRow, 0);
+        // Get the selected course offering
+        CourseOffering selectedOffering = displayedCourses.get(selectedRow);
+        Course course = selectedOffering.getCourse();
 
-        if (co == null) {
-            JOptionPane.showMessageDialog(this, "No course found for the selected row.");
+        // VALIDATION 1: Check if enrollment is open
+        if (!selectedOffering.isEnrollmentOpen()) {
+            JOptionPane.showMessageDialog(this,
+                    "Enrollment is currently closed for " + course.getCourseId(),
+                    "Enrollment Closed",
+                    JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        if (!co.isEnrollmentOpen()) {
-            JOptionPane.showMessageDialog(this, "Enrollment not activated by faculty.");
+        // VALIDATION 2: Check if course is full
+        if (selectedOffering.isFull()) {
+            JOptionPane.showMessageDialog(this,
+                    course.getCourseId() + " is full.\n"
+                    + "Capacity: " + selectedOffering.getCapacity() + "\n"
+                    + "Enrolled: " + selectedOffering.getActiveEnrollmentCount(),
+                    "Course Full",
+                    JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-//        int currentCredits = student.getCurrentTermCredits(co.getSemester());
-//        if (currentCredits + co.getCourse().getCreditHours() > 8) {
-//            JOptionPane.showMessageDialog(this, "You cannot take more than 8 credits this semester.");
-//            return;
-//        }
+        if (isAlreadyEnrolled(selectedOffering)) {
+            JOptionPane.showMessageDialog(this,
+                    "You are already enrolled in " + course.getCourseId(),
+                    "Already Enrolled",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
-//        Enrollment e = new Enrollment(student, co);
-//        boolean success = co.enrollStudent(e);
-//
-//        if (success) {
-//            student.addEnrollment(e);
-//            JOptionPane.showMessageDialog(this, "Enrolled successfully in " + co.getCourse().getCourseName());
-//        } else {
-//            JOptionPane.showMessageDialog(this, "Enrollment failed (capacity full).");
-//        }
+        String semester = selectedOffering.getSemester();
+        int currentCredits = studentProfile.getCurrentTermCredits(semester);
+        int courseCredits = course.getCreditHours();
+
+        if (currentCredits + courseCredits > 8) {
+            JOptionPane.showMessageDialog(this,
+                    "Cannot enroll: Credit hour limit exceeded!\n\n"
+                    + "Current credits for " + semester + ": " + currentCredits + "\n"
+                    + "Course credits: " + courseCredits + "\n"
+                    + "Total would be: " + (currentCredits + courseCredits) + "\n"
+                    + "Maximum allowed: 8 credits per semester",
+                    "Credit Limit Exceeded",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int response = JOptionPane.showConfirmDialog(this,
+                "Enroll in " + course.getCourseId() + " - " + course.getCourseName() + "?\n\n"
+                + "Credits: " + courseCredits + "\n"
+                + "Semester: " + semester + "\n"
+                + "Faculty: " + selectedOffering.getFaculty().getPerson().getFullName() + "\n"
+                + "Tuition: $" + (courseCredits * 1000) + "\n\n"
+                + "Your total credits for " + semester + " will be: "
+                + (currentCredits + courseCredits) + "/8",
+                "Confirm Enrollment",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+
+        if (response == JOptionPane.YES_OPTION) {
+            Enrollment enrollment = new Enrollment(studentProfile, selectedOffering);
+
+            boolean success = selectedOffering.enrollStudent(enrollment);
+
+            if (success) {
+                
+                studentProfile.addEnrollment(enrollment);
+
+                
+                int newEnrolled = selectedOffering.getActiveEnrollmentCount();
+                int capacity = selectedOffering.getCapacity();
+
+                JOptionPane.showMessageDialog(this,
+                        "Successfully enrolled in " + course.getCourseId() + "!\n\n"
+                        + "Tuition billed: $" + (courseCredits * 1000) + "\n"
+                        + "Credits for " + semester + ": "
+                        + studentProfile.getCurrentTermCredits(semester) + "/8\n\n"
+                        + "Course Capacity: " + newEnrolled + "/" + capacity,
+                        "Enrollment Successful",
+                        JOptionPane.INFORMATION_MESSAGE);
+
+                
+                populateCoursesTable(displayedCourses);
+            }
+        }
     }//GEN-LAST:event_btnEnrollActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        String query = fieldSearch.getText().trim();
-        if (query.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Enter a search term.");
+        String searchBy = (String) cmbFilter.getSelectedItem();
+        String searchTerm = fieldSearch.getText().trim();
+
+        if (searchTerm.isEmpty()) {
+            loadAllCourses();
             return;
         }
-        String filter = (String) cmbFilter.getSelectedItem();
-        ArrayList<CourseOffering> results = searchCourses(query, filter);
-        populateCoursesTable(results);
+        ArrayList<CourseOffering> searchResults = new ArrayList<>();
+
+        switch (searchBy) {
+            case "Course ID":
+                searchResults = business.getCourseDirectory().searchByCourseId(searchTerm);
+                break;
+
+            case "Faculty":
+                searchResults = searchByFacultyName(searchTerm);
+                break;
+
+            case "Semester":
+                searchResults = business.getCourseDirectory().searchBySemester(searchTerm);
+                break;
+
+            default:
+                searchResults = business.getCourseDirectory().getOfferings();
+                break;
+        }
+
+        displayedCourses = searchResults;
+
+        populateCoursesTable(searchResults);
+
+        if (searchResults.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "No courses found matching '" + searchTerm + "'",
+                    "No Results",
+                    JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void populateTable(ArrayList<CourseOffering> offerings, Business b) {
@@ -233,20 +330,20 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
         }
     }
 
-    private void populateCoursesTable(ArrayList<CourseOffering> offerings) {
-        DefaultTableModel model = (DefaultTableModel) tblCourses.getModel();
-        model.setRowCount(0);
-        for (CourseOffering co : offerings) {
-            Object[] row = new Object[7];
-            row[0] = co;
-            row[1] = co.getCourse().getCourseName();
-            row[2] = co.getCourse().getDescription();
-            row[3] = co.getSemester();
-            row[4] = co.getCapacity();
-            //x`row[5] = co.getFaculty().getPerson().getName();
-            row[6] = co.isEnrollmentOpen() ? "Open" : "Closed";
-            model.addRow(row);
+    private ArrayList<CourseOffering> searchByFacultyName(String name) {
+        ArrayList<CourseOffering> results = new ArrayList<>();
+        String searchLower = name.toLowerCase();
+
+        for (CourseOffering offering : business.getCourseDirectory().getOfferings()) {
+            if (offering.getFaculty() != null) {
+                String facultyName = offering.getFaculty().getPerson().getFullName().toLowerCase();
+                if (facultyName.contains(searchLower)) {
+                    results.add(offering);
+                }
+            }
         }
+
+        return results;
     }
 
     private ArrayList<CourseOffering> searchCourses(String query, String filterType) {
@@ -273,6 +370,58 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
         return results;
     }
 
+    private void initializeSearchFilter() {
+        cmbFilter.removeAllItems();
+        cmbFilter.addItem("Course ID");
+        cmbFilter.addItem("Faculty");
+        cmbFilter.addItem("Semester");
+    }
+
+    private boolean isAlreadyEnrolled(CourseOffering offering) {
+        for (Enrollment e : studentProfile.getEnrollments()) {
+            if (e.getOffering() == offering
+                    && !e.getStatus().equalsIgnoreCase("Dropped")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void loadAllCourses() {
+        displayedCourses = business.getCourseDirectory().getOfferings();
+        populateCoursesTable(displayedCourses);
+    }
+
+    private void populateCoursesTable(ArrayList<CourseOffering> offerings) {
+        DefaultTableModel model = (DefaultTableModel) tblCourses.getModel();
+
+        model.setRowCount(0);
+
+        for (CourseOffering offering : offerings) {
+            Course course = offering.getCourse();
+
+            int enrolled = offering.getActiveEnrollmentCount();
+            int capacity = offering.getCapacity();
+            String capacityInfo = enrolled + "/" + capacity;
+
+            String facultyName = offering.getFaculty() != null
+                    ? offering.getFaculty().getPerson().getFullName() : "TBA";
+
+            String enrollmentStatus = offering.isEnrollmentOpen() ? "Open" : "Closed";
+
+            Object[] row = new Object[7];
+            row[0] = course.getCourseId();
+            row[1] = course.getCourseName();
+            row[2] = course.getDescription();
+            row[3] = offering.getSemester();
+            row[4] = capacityInfo;
+            row[5] = facultyName;
+            row[6] = enrollmentStatus;
+
+            model.addRow(row);
+        }
+        tblCourses.setDefaultEditor(Object.class, null);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEnroll;

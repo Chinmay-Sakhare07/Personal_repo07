@@ -4,6 +4,10 @@
  */
 package UserInterface.WorkAreas.StudentRole;
 
+import Business.Business;
+import Business.Profiles.StudentProfile;
+import javax.swing.JPanel;
+
 /**
  *
  * @author chinm
@@ -13,7 +17,7 @@ public class CourseWorkManagementJPanel extends javax.swing.JPanel {
     /**
      * Creates new form CourseWorkManagementJPanel
      */
-    public CourseWorkManagementJPanel() {
+    public CourseWorkManagementJPanel(Business business, StudentProfile studentProfile, JPanel cardSequencePanel) {
         initComponents();
     }
 

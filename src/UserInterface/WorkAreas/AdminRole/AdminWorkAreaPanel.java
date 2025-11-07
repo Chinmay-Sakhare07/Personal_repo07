@@ -2,16 +2,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package UserInterface.WorkArea.AdminRole;
+package UserInterface.WorkAreas.AdminRole;
 
 
 import java.awt.CardLayout;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import Business.Business;
-import UserInterface.WorkArea.AdminRole.ManageStudentRecords;
-import UserInterface.WorkArea.AdminRole.ManagePersonsPanel;
-import UserInterface.WorkArea.AdminRole.ManageCoursePanel;
+import UserInterface.WorkAreas.AdminRole.ManageStudentRecords;
+import UserInterface.WorkAreas.AdminRole.ManagePersonsPanel;
+import UserInterface.WorkAreas.AdminRole.ManageCoursePanel;
 
 
 /**

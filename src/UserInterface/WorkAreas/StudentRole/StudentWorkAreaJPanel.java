@@ -172,9 +172,9 @@ public class StudentWorkAreaJPanel extends javax.swing.JPanel {
                         .addGap(272, 272, 272)
                         .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(226, 226, 226)
-                        .addComponent(lblTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(212, Short.MAX_VALUE))
+                        .addGap(83, 83, 83)
+                        .addComponent(lblTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(201, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -201,6 +201,10 @@ public class StudentWorkAreaJPanel extends javax.swing.JPanel {
 
     private void btnCourseManagementIdentifyResourceAssetsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCourseManagementIdentifyResourceAssetsActionPerformed
 
+        System.out.println("Navigating to Course Work Management");
+        System.out.println("Student Profile: " + studentProfile.getPerson().getFullName());
+        System.out.println("Total Enrollments: " + studentProfile.getEnrollments().size());
+
         CourseWorkManagementJPanel panel = new CourseWorkManagementJPanel(business, studentProfile, cardSequencePanel);
         navigateToPanel(panel, "CourseWorkManagement");
 
@@ -217,6 +221,10 @@ public class StudentWorkAreaJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnGraduationAuditActionPerformed
 
     private void btnCourseRegistrationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCourseRegistrationActionPerformed
+        System.out.println("Navigating to Course Registration");
+        System.out.println("Student Profile: " + studentProfile.getPerson().getFullName());
+        System.out.println("Total Enrollments: " + studentProfile.getEnrollments().size());
+
         CourseRegistrationJPanel panel = new CourseRegistrationJPanel(business, studentProfile, cardSequencePanel);
         navigateToPanel(panel, "CourseRegistration");
 }//GEN-LAST:event_btnCourseRegistrationActionPerformed

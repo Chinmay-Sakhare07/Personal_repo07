@@ -5,6 +5,7 @@
  */
 
 import Business.Business;
+import Business.Course.Enrollment;
 import Business.Profiles.EmployeeProfile;
 import Business.Profiles.FacultyProfile;
 import Business.Profiles.Profile;
@@ -133,7 +134,6 @@ public class ProfileWorkAreaMainFrame extends javax.swing.JFrame {
         String un = UserNameTextField.getText().trim();
         String pw = PasswordTextField.getText().trim();
 
-        // Validation
         if (un.isEmpty() || pw.isEmpty()) {
             JOptionPane.showMessageDialog(this,
                     "Please enter both username and password",
@@ -154,7 +154,7 @@ public class ProfileWorkAreaMainFrame extends javax.swing.JFrame {
         }
 
         Profile profile = useraccount.getAssociatedPersonProfile();
-        
+
         if (profile instanceof EmployeeProfile) {
             AdminWorkAreaPanel adminworkarea = new AdminWorkAreaPanel(business, CardSequencePanel);
             CardSequencePanel.removeAll();
@@ -163,6 +163,17 @@ public class ProfileWorkAreaMainFrame extends javax.swing.JFrame {
             setTitle("Digital University System - Admin Dashboard");
         } else if (profile instanceof StudentProfile) {
             StudentProfile spp = (StudentProfile) profile;
+
+            // DEBUG
+            System.out.println("\n===== LOGIN DEBUG =====");
+            System.out.println("Logged in as: " + spp.getPerson().getFullName());
+            System.out.println("Total Enrollments: " + spp.getEnrollments().size());
+            for (Enrollment e : spp.getEnrollments()) {
+                System.out.println("  - " + e.getOffering().getCourse().getCourseId()
+                        + " (" + e.getOffering().getSemester() + ")");
+            }
+            System.out.println("======================\n");
+
             StudentWorkAreaJPanel studentworkareajpanel = new StudentWorkAreaJPanel(business, spp, CardSequencePanel);
             CardSequencePanel.removeAll();
             CardSequencePanel.add("student", studentworkareajpanel);

@@ -112,7 +112,6 @@
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="fieldCreditsCompleted" min="-2" pref="150" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="chckBoxReadyToGraduate" min="-2" pref="103" max="-2" attributes="0"/>
                           <Component id="fieldRemaingCredits" alignment="0" min="-2" pref="167" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -195,11 +194,9 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel14" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="chckBoxReadyToGraduate" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="fieldRemaingCredits" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="fieldRemaingCredits" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="27" max="32767" attributes="0"/>
+              <EmptySpace pref="59" max="32767" attributes="0"/>
           </Group>
           <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
@@ -216,6 +213,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Back"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBackActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
@@ -245,6 +245,9 @@
           <StringArray count="0"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmbBoxSemesterActionPerformed"/>
+      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
@@ -402,11 +405,6 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Ready To Graduate?"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="chckBoxReadyToGraduate">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chckBoxReadyToGraduateActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="fieldRemaingCredits">
       <Events>

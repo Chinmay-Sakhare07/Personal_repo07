@@ -18,14 +18,13 @@ public class StudentProfile extends Profile {
 
     private Transcript transcript;
     private StudentAccount account;
-    private ArrayList<Enrollment> enrollments;
+    private ArrayList<Enrollment> enrollments = new ArrayList<>();
 
     public StudentProfile(Person p) {
         super(p);
         this.transcript = new Transcript();
         this.account = new StudentAccount();
         this.enrollments = new ArrayList<>();
-
     }
 
     @Override
@@ -39,8 +38,12 @@ public class StudentProfile extends Profile {
     }
 
     public void addEnrollment(Enrollment e) {
+        if (enrollments == null) {
+            System.err.println("ERROR: Enrollments list is NULL for " + person.getPersonId());
+            enrollments = new ArrayList<>();
+        }
+
         enrollments.add(e);
-        transcript.addTranscriptEntry(e);
         account.billTuition(e.getOffering().getCourse().getCreditHours() * 1000.0);
     }
 

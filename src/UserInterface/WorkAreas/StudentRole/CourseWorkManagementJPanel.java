@@ -71,7 +71,12 @@ public class CourseWorkManagementJPanel extends javax.swing.JPanel {
 
         ArrayList<Enrollment> enrollments = studentProfile.getEnrollments();
 
+        System.out.println("===== COURSE WORK MANAGEMENT DEBUG =====");
+        System.out.println("Student: " + studentProfile.getPerson().getFullName());
+        System.out.println("Total enrollments: " + enrollments.size());
+
         if (enrollments.isEmpty()) {
+            System.out.println("ERROR: No enrollments found!");
             JOptionPane.showMessageDialog(this,
                     "You are not enrolled in any courses.",
                     "No Enrollments",
@@ -79,13 +84,45 @@ public class CourseWorkManagementJPanel extends javax.swing.JPanel {
             return;
         }
 
+        System.out.println("\nAll Enrollments:");
+        for (Enrollment e : enrollments) {
+            System.out.println("  - Course: " + e.getOffering().getCourse().getCourseId());
+            System.out.println("    Semester: " + e.getOffering().getSemester());
+            System.out.println("    Status: " + e.getStatus());
+            System.out.println("    Assignments: " + e.getOffering().getAssignments().size());
+        }
+
+        int fall2025Count = 0;
         for (Enrollment enrollment : enrollments) {
-            if (!enrollment.getStatus().equalsIgnoreCase("Dropped")) {
+            System.out.println("\nChecking enrollment:");
+            System.out.println("  Status: " + enrollment.getStatus());
+            System.out.println("  Semester: '" + enrollment.getOffering().getSemester() + "'");
+            System.out.println("  Equals 'Fall 2025'? " + enrollment.getOffering().getSemester().equals("Fall 2025"));
+
+            if (!enrollment.getStatus().equalsIgnoreCase("Dropped")
+                    && enrollment.getOffering().getSemester().equals("Fall 2025")) {
+
                 CourseOffering offering = enrollment.getOffering();
                 String displayText = offering.getCourse().getCourseId() + " - "
                         + offering.getCourse().getCourseName();
                 cmbSelectCourse.addItem(displayText);
+                fall2025Count++;
+
+                System.out.println("  -> ADDED to dropdown: " + displayText);
+                System.out.println("  -> Assignments count: " + offering.getAssignments().size());
             }
+        }
+
+        System.out.println("\nTotal Fall 2025 courses in dropdown: " + fall2025Count);
+        System.out.println("========================================\n");
+
+        if (fall2025Count == 0) {
+            JOptionPane.showMessageDialog(this,
+                    "You are not enrolled in any Fall 2025 courses.\n"
+                    + "Please register for courses first.",
+                    "No Fall 2025 Enrollments",
+                    JOptionPane.INFORMATION_MESSAGE);
+            return;
         }
 
         if (cmbSelectCourse.getItemCount() > 0) {
@@ -105,7 +142,9 @@ public class CourseWorkManagementJPanel extends javax.swing.JPanel {
         int currentIndex = 0;
 
         for (Enrollment enrollment : enrollments) {
-            if (!enrollment.getStatus().equalsIgnoreCase("Dropped")) {
+            if (!enrollment.getStatus().equalsIgnoreCase("Dropped")
+                    && enrollment.getOffering().getSemester().equals("Fall 2025")) {
+
                 if (currentIndex == selectedIndex) {
                     selectedCourseOffering = enrollment.getOffering();
 
@@ -114,7 +153,6 @@ public class CourseWorkManagementJPanel extends javax.swing.JPanel {
                     fieldCredits.setText(String.valueOf(selectedCourseOffering.getCourse().getCreditHours()));
 
                     loadAssignments();
-
                     clearSubmissionDetails();
 
                     break;

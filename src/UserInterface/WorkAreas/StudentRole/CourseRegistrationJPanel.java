@@ -10,7 +10,6 @@ import Business.Course.CourseOffering;
 import Business.Course.Enrollment;
 import Business.Profiles.CourseDirectory;
 import Business.Profiles.StudentProfile;
-import java.awt.CardLayout;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -183,11 +182,18 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
             return;
         }
 
-        // Get the selected course offering
         CourseOffering selectedOffering = displayedCourses.get(selectedRow);
         Course course = selectedOffering.getCourse();
 
-        // VALIDATION 1: Check if enrollment is open
+        if (hasAlreadyTakenCourse(course.getCourseId())) {
+            JOptionPane.showMessageDialog(this,
+                    "You have already completed " + course.getCourseId() + ".\n"
+                    + "Students cannot retake courses they have already passed.",
+                    "Course Already Taken",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         if (!selectedOffering.isEnrollmentOpen()) {
             JOptionPane.showMessageDialog(this,
                     "Enrollment is currently closed for " + course.getCourseId(),
@@ -196,7 +202,6 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
             return;
         }
 
-        // VALIDATION 2: Check if course is full
         if (selectedOffering.isFull()) {
             JOptionPane.showMessageDialog(this,
                     course.getCourseId() + " is full.\n"
@@ -216,6 +221,18 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
         }
 
         String semester = selectedOffering.getSemester();
+        int currentCourseCount = getCurrentSemesterCourseCount(semester);
+
+        if (currentCourseCount >= 2) {
+            JOptionPane.showMessageDialog(this,
+                    "Cannot enroll: Course limit exceeded!\n\n"
+                    + "You are already enrolled in " + currentCourseCount + " courses for " + semester + "\n"
+                    + "Maximum allowed: 2 courses per semester (8 credit hours)",
+                    "Course Limit Exceeded",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         int currentCredits = studentProfile.getCurrentTermCredits(semester);
         int courseCredits = course.getCreditHours();
 
@@ -237,6 +254,8 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
                 + "Semester: " + semester + "\n"
                 + "Faculty: " + selectedOffering.getFaculty().getPerson().getFullName() + "\n"
                 + "Tuition: $" + (courseCredits * 1000) + "\n\n"
+                + "Your total courses for " + semester + " will be: "
+                + (currentCourseCount + 1) + "/2\n"
                 + "Your total credits for " + semester + " will be: "
                 + (currentCredits + courseCredits) + "/8",
                 "Confirm Enrollment",
@@ -249,23 +268,35 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
             boolean success = selectedOffering.enrollStudent(enrollment);
 
             if (success) {
-                
                 studentProfile.addEnrollment(enrollment);
 
-                
+                System.out.println("===== ENROLLMENT DEBUG =====");
+                System.out.println("Student: " + studentProfile.getPerson().getFullName());
+                System.out.println("Course: " + course.getCourseId());
+                System.out.println("Semester: " + selectedOffering.getSemester());
+                System.out.println("Total enrollments for student: " + studentProfile.getEnrollments().size());
+                System.out.println("Fall 2025 enrollments: " + getCurrentSemesterCourseCount("Fall 2025"));
+
+                for (Enrollment e : studentProfile.getEnrollments()) {
+                    System.out.println("  - " + e.getOffering().getCourse().getCourseId()
+                            + " (" + e.getOffering().getSemester() + ") - Status: " + e.getStatus());
+                }
+                System.out.println("============================");
+
                 int newEnrolled = selectedOffering.getActiveEnrollmentCount();
                 int capacity = selectedOffering.getCapacity();
 
                 JOptionPane.showMessageDialog(this,
                         "Successfully enrolled in " + course.getCourseId() + "!\n\n"
                         + "Tuition billed: $" + (courseCredits * 1000) + "\n"
+                        + "Courses for " + semester + ": "
+                        + getCurrentSemesterCourseCount(semester) + "/2\n"
                         + "Credits for " + semester + ": "
                         + studentProfile.getCurrentTermCredits(semester) + "/8\n\n"
                         + "Course Capacity: " + newEnrolled + "/" + capacity,
                         "Enrollment Successful",
                         JOptionPane.INFORMATION_MESSAGE);
 
-                
                 populateCoursesTable(displayedCourses);
             }
         }
@@ -375,6 +406,21 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
         cmbFilter.addItem("Course ID");
         cmbFilter.addItem("Faculty");
         cmbFilter.addItem("Semester");
+    }
+
+    private int getCurrentSemesterCourseCount(String semester) {
+        int count = 0;
+        for (Enrollment e : studentProfile.getEnrollments()) {
+            if (e.getOffering().getSemester().equalsIgnoreCase(semester)
+                    && !e.getStatus().equalsIgnoreCase("Dropped")) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    private boolean hasAlreadyTakenCourse(String courseId) {
+        return studentProfile.getTranscript().hasCompletedCourse(courseId);
     }
 
     private boolean isAlreadyEnrolled(CourseOffering offering) {

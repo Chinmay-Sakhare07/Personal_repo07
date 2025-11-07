@@ -5,7 +5,13 @@
 package UserInterface.WorkAreas.StudentRole;
 
 import Business.Business;
+import Business.Person.Person;
 import Business.Profiles.StudentProfile;
+import Business.Transcripts.Transcript;
+import java.awt.Color;
+import java.text.DecimalFormat;
+import java.util.regex.Pattern;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -17,8 +23,99 @@ public class ManageProfileJPanel extends javax.swing.JPanel {
     /**
      * Creates new form ManageProfileJPanel
      */
+    private Business business;
+    private StudentProfile studentProfile;
+    private JPanel cardSequencePanel;
+    private DecimalFormat gpaFormat;
+
+    private String originalEmail;
+    private String originalPhone;
+
     public ManageProfileJPanel(Business business, StudentProfile studentProfile, JPanel cardSequencePanel) {
+        this.business = business;
+        this.studentProfile = studentProfile;
+        this.cardSequencePanel = cardSequencePanel;
+        this.gpaFormat = new DecimalFormat("0.00");
+
         initComponents();
+
+        setupUI();
+        loadStudentData();
+    }
+
+    private void setupUI() {
+        fieldStudentId.setEditable(false);
+        fieldStudentId.setBackground(new Color(220, 220, 220));
+
+        fieldFirstName.setEditable(false);
+        fieldFirstName.setBackground(new Color(220, 220, 220));
+
+        fieldLastName.setEditable(false);
+        fieldLastName.setBackground(new Color(220, 220, 220));
+
+        fieldDepartment.setEditable(false);
+        fieldDepartment.setBackground(new Color(220, 220, 220));
+
+        fieldAcademicStanding.setEditable(false);
+        fieldAcademicStanding.setBackground(new Color(220, 220, 220));
+
+        fieldTotalCredits.setEditable(false);
+        fieldTotalCredits.setBackground(new Color(220, 220, 220));
+
+        fieldOverallGPA.setEditable(false);
+        fieldOverallGPA.setBackground(new Color(220, 220, 220));
+
+        fieldEmail.setBackground(Color.WHITE);
+        fieldPhone.setBackground(Color.WHITE);
+    }
+
+    private void loadStudentData() {
+        Person person = studentProfile.getPerson();
+        Transcript transcript = studentProfile.getTranscript();
+
+        fieldStudentId.setText(person.getPersonId());
+        fieldFirstName.setText(person.getFirstName());
+        fieldLastName.setText(person.getLastName());
+        fieldEmail.setText(person.getEmail());
+        fieldPhone.setText(person.getPhone());
+        fieldDepartment.setText(person.getDepartment() != null ? person.getDepartment() : "N/A");
+
+        originalEmail = person.getEmail();
+        originalPhone = person.getPhone();
+
+        String standing = transcript.determineStanding();
+        fieldAcademicStanding.setText(standing);
+
+        switch (standing) {
+            case "Good Standing":
+                fieldAcademicStanding.setForeground(new Color(40, 167, 69));
+                break;
+            case "Academic Warning":
+                fieldAcademicStanding.setForeground(new Color(253, 126, 20));
+                break;
+            case "Academic Probation":
+                fieldAcademicStanding.setForeground(new Color(220, 53, 69));
+                break;
+            default:
+                fieldAcademicStanding.setForeground(Color.BLACK);
+                break;
+        }
+
+        int totalCredits = transcript.getTotalCredits();
+        fieldTotalCredits.setText(totalCredits + " / 32");
+
+        double overallGPA = transcript.calculateOverallGPA();
+        fieldOverallGPA.setText(gpaFormat.format(overallGPA));
+
+        if (overallGPA >= 3.7) {
+            fieldOverallGPA.setForeground(new Color(34, 139, 34));
+        } else if (overallGPA >= 3.0) {
+            fieldOverallGPA.setForeground(new Color(40, 167, 69));
+        } else if (overallGPA >= 2.7) {
+            fieldOverallGPA.setForeground(new Color(253, 126, 20));
+        } else {
+            fieldOverallGPA.setForeground(new Color(220, 53, 69));
+        }
     }
 
     /**
@@ -52,9 +149,9 @@ public class ManageProfileJPanel extends javax.swing.JPanel {
         fieldTotalCredits = new javax.swing.JTextField();
         fieldOverallGPA = new javax.swing.JTextField();
         fieldAcademicStanding = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnSave = new javax.swing.JButton();
+        btnReset = new javax.swing.JButton();
+        btnCancel = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(215, 204, 200));
 
@@ -92,86 +189,90 @@ public class ManageProfileJPanel extends javax.swing.JPanel {
 
         jLabel13.setText("Academic Standing:");
 
-        jButton1.setText("jButton1");
+        btnSave.setText("Save Changes");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("jButton2");
+        btnReset.setText("Reset");
 
-        jButton3.setText("jButton3");
+        btnCancel.setText("Cancel");
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnBack)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(46, 46, 46))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGap(18, 18, 18)
+                        .addGap(27, 27, 27)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(fieldStudentId, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(fieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(fieldFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addGap(0, 0, Short.MAX_VALUE)))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.LEADING)))
                                 .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(fieldDepartment, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(fieldLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(fieldPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(27, 27, 27))
-                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(fieldOverallGPA, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(fieldTotalCredits, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(fieldAcademicStanding, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(66, 66, 66)
-                .addComponent(jButton1)
-                .addGap(114, 114, 114)
-                .addComponent(jButton2)
-                .addGap(145, 145, 145)
-                .addComponent(jButton3)
-                .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(fieldAcademicStanding, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(fieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(fieldFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(fieldStudentId, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jLabel7)))
+                                        .addGap(36, 36, 36)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(fieldDepartment, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(fieldLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(fieldPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnBack)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(130, 130, 130)
+                        .addComponent(btnSave)
+                        .addGap(114, 114, 114)
+                        .addComponent(btnReset)
+                        .addGap(145, 145, 145)
+                        .addComponent(btnCancel)))
+                .addContainerGap(87, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(16, 16, 16)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnBack)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(78, 78, 78)
+                        .addComponent(btnBack)
+                        .addGap(13, 13, 13))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -206,22 +307,148 @@ public class ManageProfileJPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel12)
                     .addComponent(fieldOverallGPA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(50, 50, 50)
+                .addGap(62, 62, 62)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
-                .addContainerGap(193, Short.MAX_VALUE))
+                    .addComponent(btnSave)
+                    .addComponent(btnReset)
+                    .addComponent(btnCancel))
+                .addContainerGap(119, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
-        // TODO add your handling code here:
+        if (!fieldEmail.getText().equals(originalEmail)
+                || !fieldPhone.getText().equals(originalPhone)) {
+
+            int response = JOptionPane.showConfirmDialog(this,
+                    "You have unsaved changes.\n"
+                    + "Do you want to save before leaving?",
+                    "Unsaved Changes",
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE);
+
+            if (response == JOptionPane.YES_OPTION) {
+                btnSaveActionPerformed(null);
+                navigateBack();
+            } else if (response == JOptionPane.NO_OPTION) {
+                navigateBack();
+            }
+        } else {
+            navigateBack();
+        }
     }//GEN-LAST:event_btnBackActionPerformed
 
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        String newEmail = fieldEmail.getText().trim();
+        String newPhone = fieldPhone.getText().trim();
 
+        if (newEmail.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Email cannot be empty",
+                    "Validation Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (!isValidEmail(newEmail)) {
+            JOptionPane.showMessageDialog(this,
+                    "Please enter a valid email address\n"
+                    + "Example: username@northeastern.edu",
+                    "Invalid Email",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (newPhone.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Phone cannot be empty",
+                    "Validation Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (!isValidPhone(newPhone)) {
+            JOptionPane.showMessageDialog(this,
+                    "Please enter a valid phone number\n"
+                    + "Example: 857-123-4567 or 8571234567",
+                    "Invalid Phone",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (newEmail.equals(originalEmail) && newPhone.equals(originalPhone)) {
+            JOptionPane.showMessageDialog(this,
+                    "No changes were made",
+                    "No Changes",
+                    JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        int response = JOptionPane.showConfirmDialog(this,
+                "Save changes to your profile?\n\n"
+                + "Email: " + newEmail + "\n"
+                + "Phone: " + newPhone,
+                "Confirm Changes",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+
+        if (response == JOptionPane.YES_OPTION) {
+            Person person = studentProfile.getPerson();
+            person.setEmail(newEmail);
+            person.setPhone(newPhone);
+
+            originalEmail = newEmail;
+            originalPhone = newPhone;
+
+            JOptionPane.showMessageDialog(this,
+                    "Profile updated successfully!",
+                    "Success",
+                    JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        if (!fieldEmail.getText().equals(originalEmail)
+                || !fieldPhone.getText().equals(originalPhone)) {
+
+            int response = JOptionPane.showConfirmDialog(this,
+                    "You have unsaved changes.\n"
+                    + "Are you sure you want to cancel?",
+                    "Unsaved Changes",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE);
+
+            if (response != JOptionPane.YES_OPTION) {
+                return;
+            }
+        }
+
+        navigateBack();
+    }//GEN-LAST:event_btnCancelActionPerformed
+
+    private void navigateBack() {
+        StudentWorkAreaJPanel dashboard = new StudentWorkAreaJPanel(business, studentProfile, cardSequencePanel);
+        cardSequencePanel.add(dashboard, "StudentDashboard");
+        ((java.awt.CardLayout) cardSequencePanel.getLayout()).show(cardSequencePanel, "StudentDashboard");
+        cardSequencePanel.revalidate();
+        cardSequencePanel.repaint();
+    }
+
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        return pattern.matcher(email).matches();
+    }
+
+    private boolean isValidPhone(String phone) {
+        String cleaned = phone.replaceAll("[^0-9]", "");
+        return cleaned.length() == 10;
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnCancel;
+    private javax.swing.JButton btnReset;
+    private javax.swing.JButton btnSave;
     private javax.swing.JTextField fieldAcademicStanding;
     private javax.swing.JTextField fieldDepartment;
     private javax.swing.JTextField fieldEmail;
@@ -231,9 +458,6 @@ public class ManageProfileJPanel extends javax.swing.JPanel {
     private javax.swing.JTextField fieldPhone;
     private javax.swing.JTextField fieldStudentId;
     private javax.swing.JTextField fieldTotalCredits;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;

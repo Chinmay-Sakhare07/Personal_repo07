@@ -24,23 +24,13 @@ public class FacultyWorkAreaJPanel extends javax.swing.JPanel {
     Business business;
     FacultyProfile fpp;
 
-    /**
-     * Creates new form UnitRiskWorkArea
-     */
-
-    public FacultyWorkAreaJPanel(Business b, JPanel clp) {
-
-        business = b;
-        this.CardSequencePanel = clp;
-        initComponents();
-
-    }
-
     public FacultyWorkAreaJPanel(Business business, FacultyProfile fpp, JPanel CardSequencePanel) {
         this.business = business;
         this.CardSequencePanel = CardSequencePanel;
         this.fpp = fpp;
         initComponents();
+
+        jLabel1.setText("Welcome, " + fpp.getPerson().getFullName() + "!");
     }
 
     /**
@@ -97,11 +87,10 @@ public class FacultyWorkAreaJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-   CardSequencePanel.removeAll();
-    FacultyConsole console = new FacultyConsole(business, CardSequencePanel);
-    CardSequencePanel.add("Faculty Console", console);
-    ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);        // TODO add your handling code here:
-
+        CardSequencePanel.removeAll();
+        FacultyConsole console = new FacultyConsole(business, fpp, CardSequencePanel);
+        CardSequencePanel.add("Faculty Console", console);
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
 }//GEN-LAST:event_jButton11ActionPerformed
 
 

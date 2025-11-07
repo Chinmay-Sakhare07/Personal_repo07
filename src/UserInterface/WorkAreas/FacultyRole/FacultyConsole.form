@@ -121,6 +121,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="close Enrollment"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCloseEnrollmentActionPerformed"/>
+              </Events>
             </Component>
             <Container class="javax.swing.JScrollPane" name="jScrollPane1">
               <AuxValues>
@@ -186,11 +189,17 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Update "/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnUpdateActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnCourseSaveSyllabus">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Save Syllabus"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCourseSaveSyllabusActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnCourseBack">
               <Properties>
@@ -351,6 +360,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Access Transcript"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnStudentTranscriptActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnStudentGrade">
               <Properties>
@@ -364,11 +376,17 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="view Ranking"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnStudentViewRankingActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnStudentBack">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Back"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnStudentBackActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -478,7 +496,7 @@
                           <Component id="btnProfilesEdit" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnProfilesSave" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="185" max="32767" attributes="0"/>
+                      <EmptySpace pref="191" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -533,6 +551,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Edit"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnProfilesEditActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnProfilesSave">
               <Properties>
@@ -546,6 +567,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Back"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnProfilesBackActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -714,6 +738,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Back"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnReportsBackActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -811,6 +838,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Back"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnTuitionBackActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

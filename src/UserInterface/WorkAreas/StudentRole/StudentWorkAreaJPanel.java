@@ -59,12 +59,11 @@ public class StudentWorkAreaJPanel extends javax.swing.JPanel {
         btnFinancialManagement = new javax.swing.JButton();
         btnLogout = new javax.swing.JButton();
 
-        setBackground(new java.awt.Color(189, 221, 252));
+        setBackground(new java.awt.Color(215, 204, 200));
         setForeground(new java.awt.Color(51, 51, 51));
 
-        btnCourseManagement.setBackground(new java.awt.Color(106, 137, 167));
+        btnCourseManagement.setBackground(new java.awt.Color(176, 190, 197));
         btnCourseManagement.setFont(getFont());
-        btnCourseManagement.setForeground(new java.awt.Color(255, 255, 255));
         btnCourseManagement.setText("Course Work Management");
         btnCourseManagement.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnCourseManagement.setMaximumSize(new java.awt.Dimension(200, 40));
@@ -76,9 +75,8 @@ public class StudentWorkAreaJPanel extends javax.swing.JPanel {
             }
         });
 
-        btnManageProfile.setBackground(new java.awt.Color(106, 137, 167));
+        btnManageProfile.setBackground(new java.awt.Color(176, 190, 197));
         btnManageProfile.setFont(getFont());
-        btnManageProfile.setForeground(new java.awt.Color(255, 255, 255));
         btnManageProfile.setText("Manage Profile");
         btnManageProfile.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnManageProfile.setMaximumSize(new java.awt.Dimension(200, 40));
@@ -90,9 +88,8 @@ public class StudentWorkAreaJPanel extends javax.swing.JPanel {
             }
         });
 
-        btnGraduationAudit.setBackground(new java.awt.Color(106, 137, 167));
+        btnGraduationAudit.setBackground(new java.awt.Color(176, 190, 197));
         btnGraduationAudit.setFont(getFont());
-        btnGraduationAudit.setForeground(new java.awt.Color(255, 255, 255));
         btnGraduationAudit.setText("Graduation Audit");
         btnGraduationAudit.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnGraduationAudit.setMaximumSize(new java.awt.Dimension(200, 40));
@@ -104,9 +101,8 @@ public class StudentWorkAreaJPanel extends javax.swing.JPanel {
             }
         });
 
-        btnCourseRegistration.setBackground(new java.awt.Color(106, 137, 167));
+        btnCourseRegistration.setBackground(new java.awt.Color(176, 190, 197));
         btnCourseRegistration.setFont(getFont());
-        btnCourseRegistration.setForeground(new java.awt.Color(255, 255, 255));
         btnCourseRegistration.setText("Course Registration");
         btnCourseRegistration.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnCourseRegistration.setMaximumSize(new java.awt.Dimension(200, 40));
@@ -121,9 +117,8 @@ public class StudentWorkAreaJPanel extends javax.swing.JPanel {
         lblTitle.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         lblTitle.setText("My Student Portal");
 
-        btnTranscriptReview.setBackground(new java.awt.Color(106, 137, 167));
+        btnTranscriptReview.setBackground(new java.awt.Color(176, 190, 197));
         btnTranscriptReview.setFont(getFont());
-        btnTranscriptReview.setForeground(new java.awt.Color(255, 255, 255));
         btnTranscriptReview.setText("Transcript Review");
         btnTranscriptReview.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnTranscriptReview.setMaximumSize(new java.awt.Dimension(200, 40));
@@ -135,9 +130,8 @@ public class StudentWorkAreaJPanel extends javax.swing.JPanel {
             }
         });
 
-        btnFinancialManagement.setBackground(new java.awt.Color(106, 137, 167));
+        btnFinancialManagement.setBackground(new java.awt.Color(176, 190, 197));
         btnFinancialManagement.setFont(getFont());
-        btnFinancialManagement.setForeground(new java.awt.Color(255, 255, 255));
         btnFinancialManagement.setText("Pay Tution");
         btnFinancialManagement.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnFinancialManagement.setMaximumSize(new java.awt.Dimension(200, 40));
@@ -149,8 +143,7 @@ public class StudentWorkAreaJPanel extends javax.swing.JPanel {
             }
         });
 
-        btnLogout.setBackground(new java.awt.Color(106, 137, 167));
-        btnLogout.setForeground(new java.awt.Color(255, 255, 255));
+        btnLogout.setBackground(new java.awt.Color(176, 190, 197));
         btnLogout.setText("Logout");
         btnLogout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

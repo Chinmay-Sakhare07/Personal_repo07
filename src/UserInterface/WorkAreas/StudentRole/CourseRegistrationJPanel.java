@@ -57,7 +57,7 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
         fieldSearch = new javax.swing.JTextField();
         btnSearch = new javax.swing.JButton();
 
-        setBackground(new java.awt.Color(189, 221, 252));
+        setBackground(new java.awt.Color(215, 204, 200));
 
         tblCourses.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

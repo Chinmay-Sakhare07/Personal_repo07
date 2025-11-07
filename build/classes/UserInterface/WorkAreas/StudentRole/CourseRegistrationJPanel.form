@@ -3,7 +3,7 @@
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <Properties>
     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-      <Color blue="fc" green="dd" red="bd" type="rgb"/>
+      <Color blue="c8" green="cc" red="d7" type="rgb"/>
     </Property>
   </Properties>
   <AuxValues>

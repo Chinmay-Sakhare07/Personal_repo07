@@ -8,12 +8,12 @@ package UserInterface.WorkAreas.StudentRole;
  *
  * @author chinm
  */
-public class ManageProfileJPanel extends javax.swing.JPanel {
+public class TranscriptReviewJPanel extends javax.swing.JPanel {
 
     /**
-     * Creates new form ManageProfileJPanel
+     * Creates new form TranscriptReviewJPanel
      */
-    public ManageProfileJPanel() {
+    public TranscriptReviewJPanel() {
         initComponents();
     }
 

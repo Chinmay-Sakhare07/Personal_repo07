@@ -44,7 +44,6 @@ public class ManagePersonsJPanel extends javax.swing.JPanel {
         comboType.addItem("Student");
         comboType.addItem("Faculty");
         comboType.addItem("Admin");
-        comboType.addItem("Registrar");
 
         fieldID.setEditable(false);
         fieldID.setBackground(new Color(220, 220, 220));

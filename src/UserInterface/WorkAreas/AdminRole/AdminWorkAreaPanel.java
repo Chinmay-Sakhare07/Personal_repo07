@@ -21,7 +21,7 @@ public class AdminWorkAreaPanel extends javax.swing.JPanel {
 
     public AdminWorkAreaPanel() {
 
-        initComponents();  
+        initComponents();
 
     }
 
@@ -36,7 +36,7 @@ public class AdminWorkAreaPanel extends javax.swing.JPanel {
      */
     public AdminWorkAreaPanel(Business business, JPanel cardPanel) {
 
-        this();               
+        this();
 
         this.business = business;
 
@@ -199,11 +199,11 @@ public class AdminWorkAreaPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnMngCoursesActionPerformed
 
     private void btnMngAccActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMngAccActionPerformed
-
-        ManageStudentRecords next = new ManageStudentRecords(business, cardPanel);
-        showCard(new ManageStudentRecords(business, cardPanel), "ManageStudentsRecord");
-
-
+        ManageStudentRecordsJPanel panel = new ManageStudentRecordsJPanel(business, cardPanel);
+        cardPanel.add(panel, "ManageStudentsRecord");
+        ((java.awt.CardLayout) cardPanel.getLayout()).show(cardPanel, "ManageStudentsRecord");
+        cardPanel.revalidate();
+        cardPanel.repaint();
     }//GEN-LAST:event_btnMngAccActionPerformed
 
     private void btnLogoutIdentifyEventsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutIdentifyEventsActionPerformed

@@ -481,15 +481,6 @@ class ConfigureABusiness {
         studentProfiles[3].getAccount().makePayment(16000.0);
         studentProfiles[4].getAccount().makePayment(20000.0);
 
-        for (int i = 0; i < 9; i++) {
-            business.getPersonDirectory().newPerson(
-                    "PER" + String.format("%03d", i + 1),
-                    "Person" + (i + 1),
-                    "LastName" + (i + 1),
-                    "person" + (i + 1) + "@northeastern.edu",
-                    "617-555-" + String.format("%04d", 1000 + i)
-            );
-        }
 
         System.out.println("\n========== BUSINESS CONFIGURED ==========");
         System.out.println("Total Persons: " + business.getPersonDirectory().getPersonList().size());

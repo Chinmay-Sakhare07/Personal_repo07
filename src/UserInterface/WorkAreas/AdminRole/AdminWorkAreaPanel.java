@@ -207,10 +207,19 @@ public class AdminWorkAreaPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnMngAccActionPerformed
 
     private void btnLogoutIdentifyEventsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutIdentifyEventsActionPerformed
-        JOptionPane.showMessageDialog(this,
-                "Logged out successfully!");
+        cardPanel.removeAll();
 
+        javax.swing.JLabel welcomeLabel = new javax.swing.JLabel();
+        welcomeLabel.setFont(new java.awt.Font("Dialog", 0, 24));
+        welcomeLabel.setForeground(new java.awt.Color(102, 153, 255));
+        welcomeLabel.setText("Education Going Digital .... Info 5100");
+        welcomeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
+        cardPanel.add(welcomeLabel, "welcome");
+        ((java.awt.CardLayout) cardPanel.getLayout()).show(cardPanel, "welcome");
+
+        cardPanel.revalidate();
+        cardPanel.repaint();
     }//GEN-LAST:event_btnLogoutIdentifyEventsActionPerformed
 
     private void btnMngUsersIdentifyResourceAssetsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMngUsersIdentifyResourceAssetsActionPerformed

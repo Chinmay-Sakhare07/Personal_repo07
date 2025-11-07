@@ -5,16 +5,17 @@
 package UserInterface.WorkAreas.FacultyRole;
 
 import Business.Business;
-import javax.swing.JPanel;
-import java.awt.CardLayout;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.util.List;
-import javax.swing.JOptionPane;
-import javax.swing.RowFilter;
+
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.util.List;
+import java.util.regex.Pattern;
+
 
 
 /**
@@ -23,20 +24,21 @@ import javax.swing.table.TableRowSorter;
  */
 public class FacultyConsole extends javax.swing.JPanel {
 
-    private final Business business;
-    private final JPanel cardPanel;
-
+private final Business business;
+private final JPanel cardPanel;
 private DefaultTableModel courseModel;
 private TableRowSorter<TableModel> sorter;
 
     /**
      * Creates new form FacultyConsole
      */
-    public FacultyConsole(Business business, JPanel CardSequencePanel) {
-         this.business = business;
-         this.cardPanel = CardSequencePanel;
-        initComponents();
-    }
+   public FacultyConsole(Business business, JPanel CardSequencePanel) {
+    this.business = business;
+    this.cardPanel = CardSequencePanel;
+    initComponents();
+    initAfterGui();  // <-- add this line
+}
+
     
     
 
@@ -55,21 +57,7 @@ private TableRowSorter<TableModel> sorter;
         btnCloseEnrollment = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblCourses = new javax.swing.JTable();
-        lblCourse = new javax.swing.JLabel();
-        lblCourseTitle = new javax.swing.JLabel();
-        lblCourseDescription = new javax.swing.JLabel();
-        lblCourseRoom = new javax.swing.JLabel();
-        lblCourseTime = new javax.swing.JLabel();
-        cboCourse = new javax.swing.JComboBox<>();
-        txtCourseTitle = new javax.swing.JTextField();
-        txtCourseDescription = new javax.swing.JTextField();
-        txtCourseRoom = new javax.swing.JTextField();
-        txtCourseTime = new javax.swing.JTextField();
-        lblCourseCapacity = new javax.swing.JLabel();
-        txtCourseCapacity = new javax.swing.JTextField();
-        lblCourseSyllabus = new javax.swing.JLabel();
-        txtCourseSyllabus = new javax.swing.JTextField();
-        btnCoursesSaveDetails = new javax.swing.JButton();
+        btnUpdate = new javax.swing.JButton();
         btnCourseSaveSyllabus = new javax.swing.JButton();
         btnCourseBack = new javax.swing.JButton();
         jPanelStudents = new javax.swing.JPanel();
@@ -140,29 +128,7 @@ private TableRowSorter<TableModel> sorter;
         ));
         jScrollPane1.setViewportView(tblCourses);
 
-        lblCourse.setText("Course");
-
-        lblCourseTitle.setText("Title");
-
-        lblCourseDescription.setText("Description");
-
-        lblCourseRoom.setText("Room");
-
-        lblCourseTime.setText("Time");
-
-        cboCourse.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        txtCourseTitle.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCourseTitleActionPerformed(evt);
-            }
-        });
-
-        lblCourseCapacity.setText("Capacity");
-
-        lblCourseSyllabus.setText("Syllabus");
-
-        btnCoursesSaveDetails.setText("Save Details");
+        btnUpdate.setText("Update ");
 
         btnCourseSaveSyllabus.setText("Save Syllabus");
 
@@ -173,107 +139,49 @@ private TableRowSorter<TableModel> sorter;
         jPanelCoursesLayout.setHorizontalGroup(
             jPanelCoursesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelCoursesLayout.createSequentialGroup()
+                .addGap(25, 25, 25)
                 .addGroup(jPanelCoursesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelCoursesLayout.createSequentialGroup()
-                        .addGroup(jPanelCoursesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanelCoursesLayout.createSequentialGroup()
-                                .addComponent(lblCourseRoom)
-                                .addGap(38, 38, 38)
-                                .addComponent(txtCourseRoom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanelCoursesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(jPanelCoursesLayout.createSequentialGroup()
-                                    .addComponent(lblCourseCapacity)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(txtCourseCapacity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jPanelCoursesLayout.createSequentialGroup()
-                                    .addComponent(lblCourseDescription)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(txtCourseDescription, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(78, 78, 78)
-                        .addComponent(lblCourseTime)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtCourseTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanelCoursesLayout.createSequentialGroup()
-                        .addContainerGap()
                         .addComponent(btnOpenEnrollment)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCloseEnrollment)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnCoursesSaveDetails)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnUpdate)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCourseSaveSyllabus))
-                    .addGroup(jPanelCoursesLayout.createSequentialGroup()
-                        .addComponent(lblCourseSyllabus)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtCourseSyllabus, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanelCoursesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(jPanelCoursesLayout.createSequentialGroup()
-                            .addGroup(jPanelCoursesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(lblCourse)
-                                .addComponent(lblCourseTitle))
-                            .addGap(30, 30, 30)
-                            .addGroup(jPanelCoursesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txtCourseTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(jPanelCoursesLayout.createSequentialGroup()
-                                    .addComponent(cboCourse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnCourseBack))))
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(15, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(256, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelCoursesLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnCourseBack)
+                .addGap(184, 184, 184))
         );
         jPanelCoursesLayout.setVerticalGroup(
             jPanelCoursesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelCoursesLayout.createSequentialGroup()
-                .addGroup(jPanelCoursesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelCoursesLayout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addGroup(jPanelCoursesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblCourse)
-                            .addComponent(cboCourse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanelCoursesLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(btnCourseBack)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelCoursesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblCourseTitle)
-                    .addComponent(txtCourseTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanelCoursesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblCourseDescription)
-                    .addComponent(txtCourseDescription, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(38, 38, 38)
-                .addGroup(jPanelCoursesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblCourseRoom)
-                    .addComponent(lblCourseTime)
-                    .addComponent(txtCourseRoom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtCourseTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27)
-                .addGroup(jPanelCoursesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblCourseCapacity)
-                    .addComponent(txtCourseCapacity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanelCoursesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelCoursesLayout.createSequentialGroup()
-                        .addComponent(lblCourseSyllabus)
-                        .addGap(27, 27, 27))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelCoursesLayout.createSequentialGroup()
-                        .addComponent(txtCourseSyllabus, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(btnCourseBack)
                 .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39)
                 .addGroup(jPanelCoursesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnOpenEnrollment)
                     .addComponent(btnCloseEnrollment)
-                    .addComponent(btnCoursesSaveDetails)
+                    .addComponent(btnUpdate)
                     .addComponent(btnCourseSaveSyllabus))
-                .addGap(40, 40, 40))
+                .addContainerGap(286, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Courses", jPanelCourses);
+        jTabbedPane1.addTab("Courses Management", jPanelCourses);
 
         jPanelStudents.setBackground(new java.awt.Color(0, 153, 153));
 
-        cboCourses.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboCourses.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
+        cboCourses.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboCoursesActionPerformed(evt);
+            }
+        });
 
         lblStudentCourse.setText("Courses");
 
@@ -319,7 +227,7 @@ private TableRowSorter<TableModel> sorter;
                         .addComponent(btnStudentGrade)
                         .addGap(30, 30, 30)
                         .addComponent(btnStudentViewRanking)))
-                .addContainerGap(45, Short.MAX_VALUE))
+                .addContainerGap(243, Short.MAX_VALUE))
             .addGroup(jPanelStudentsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblStudentCourse)
@@ -347,7 +255,7 @@ private TableRowSorter<TableModel> sorter;
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("students", jPanelStudents);
+        jTabbedPane1.addTab("Students Management", jPanelStudents);
 
         jPanelProfiles.setBackground(new java.awt.Color(0, 153, 153));
 
@@ -400,16 +308,15 @@ private TableRowSorter<TableModel> sorter;
                                     .addComponent(lblProfilesOfficehrs)
                                     .addComponent(lblProfilesName))))
                         .addGap(68, 68, 68)
-                        .addGroup(jPanelProfilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtProfileName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtProfilesEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtProfilesPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtProfilesDepatment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtProfileOfficeHrs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanelProfilesLayout.createSequentialGroup()
-                                .addComponent(txtProfilesFacultyID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 192, Short.MAX_VALUE)
-                                .addComponent(btnProfilesBack))))
+                        .addGroup(jPanelProfilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(txtProfileOfficeHrs, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
+                            .addComponent(txtProfilesPhone, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtProfilesEmail, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtProfileName, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtProfilesFacultyID, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtProfilesDepatment))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 228, Short.MAX_VALUE)
+                        .addComponent(btnProfilesBack))
                     .addGroup(jPanelProfilesLayout.createSequentialGroup()
                         .addGap(41, 41, 41)
                         .addComponent(btnProfilesEdit)
@@ -454,20 +361,16 @@ private TableRowSorter<TableModel> sorter;
                 .addGroup(jPanelProfilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnProfilesEdit)
                     .addComponent(btnProfilesSave))
-                .addContainerGap(122, Short.MAX_VALUE))
+                .addContainerGap(161, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Profiles", jPanelProfiles);
+        jTabbedPane1.addTab("Profiles Management", jPanelProfiles);
 
         lblReportsSemester.setBackground(new java.awt.Color(0, 153, 153));
 
         lblReportSemester.setText("Semester");
 
         lblReportsCourse.setText("Course");
-
-        cboReportSemester.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        cboReportsCourse.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         btnReportsLoad.setText("Load");
         btnReportsLoad.addActionListener(new java.awt.event.ActionListener() {
@@ -505,29 +408,29 @@ private TableRowSorter<TableModel> sorter;
         lblReportsSemester.setLayout(lblReportsSemesterLayout);
         lblReportsSemesterLayout.setHorizontalGroup(
             lblReportsSemesterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lblReportsSemesterLayout.createSequentialGroup()
+                .addContainerGap(582, Short.MAX_VALUE)
+                .addComponent(btnReportsBack)
+                .addGap(82, 82, 82))
             .addGroup(lblReportsSemesterLayout.createSequentialGroup()
                 .addGap(37, 37, 37)
                 .addComponent(lblReportSemester)
                 .addGap(18, 18, 18)
-                .addComponent(cboReportSemester, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21)
-                .addComponent(lblReportsCourse)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cboReportsCourse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnReportsLoad)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
-                .addComponent(btnReportsExport)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lblReportsSemesterLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(lblReportsSemesterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lblReportsSemesterLayout.createSequentialGroup()
+                    .addGroup(lblReportsSemesterLayout.createSequentialGroup()
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(23, 23, 23))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lblReportsSemesterLayout.createSequentialGroup()
-                        .addComponent(btnReportsBack)
-                        .addGap(82, 82, 82))))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(lblReportsSemesterLayout.createSequentialGroup()
+                        .addComponent(cboReportSemester, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(21, 21, 21)
+                        .addComponent(lblReportsCourse)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cboReportsCourse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnReportsLoad)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 240, Short.MAX_VALUE)
+                        .addComponent(btnReportsExport)))
+                .addContainerGap())
         );
         lblReportsSemesterLayout.setVerticalGroup(
             lblReportsSemesterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -540,14 +443,14 @@ private TableRowSorter<TableModel> sorter;
                     .addComponent(cboReportsCourse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnReportsLoad)
                     .addComponent(btnReportsExport))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(15, 15, 15)
                 .addComponent(btnReportsBack)
                 .addGap(101, 101, 101))
         );
 
-        jTabbedPane1.addTab("Reports", lblReportsSemester);
+        jTabbedPane1.addTab("Performance Reports", lblReportsSemester);
 
         jPanelTuition.setBackground(new java.awt.Color(0, 153, 153));
 
@@ -571,35 +474,34 @@ private TableRowSorter<TableModel> sorter;
         jPanelTuitionLayout.setHorizontalGroup(
             jPanelTuitionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelTuitionLayout.createSequentialGroup()
-                .addContainerGap(48, Short.MAX_VALUE)
-                .addGroup(jPanelTuitionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelTuitionLayout.createSequentialGroup()
-                        .addComponent(tblTuition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(38, 38, 38))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelTuitionLayout.createSequentialGroup()
-                        .addComponent(btnTuitionBack)
-                        .addGap(63, 63, 63))))
+                .addGap(120, 120, 120)
+                .addComponent(tblTuition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(164, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelTuitionLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnTuitionBack)
+                .addGap(47, 47, 47))
         );
         jPanelTuitionLayout.setVerticalGroup(
             jPanelTuitionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelTuitionLayout.createSequentialGroup()
-                .addGap(51, 51, 51)
+                .addGap(60, 60, 60)
                 .addComponent(tblTuition, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
+                .addGap(59, 59, 59)
                 .addComponent(btnTuitionBack)
-                .addContainerGap(196, Short.MAX_VALUE))
+                .addContainerGap(194, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Tuition", jPanelTuition);
+        jTabbedPane1.addTab("Enrollment Insighnt", jPanelTuition);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 538, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addGap(48, 48, 48)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 736, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(98, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -615,12 +517,9 @@ private TableRowSorter<TableModel> sorter;
     }//GEN-LAST:event_btnStudentGradeActionPerformed
 
     private void btnOpenEnrollmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenEnrollmentActionPerformed
-        // TODO add your handling code here:
+        {  setEnrollment(true);
+}
     }//GEN-LAST:event_btnOpenEnrollmentActionPerformed
-
-    private void txtCourseTitleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCourseTitleActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCourseTitleActionPerformed
 
     private void txtProfilesDepatmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtProfilesDepatmentActionPerformed
         // TODO add your handling code here:
@@ -638,12 +537,15 @@ private TableRowSorter<TableModel> sorter;
         // TODO add your handling code here:
     }//GEN-LAST:event_btnReportsExportActionPerformed
 
+    private void cboCoursesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboCoursesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cboCoursesActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCloseEnrollment;
     private javax.swing.JButton btnCourseBack;
     private javax.swing.JButton btnCourseSaveSyllabus;
-    private javax.swing.JButton btnCoursesSaveDetails;
     private javax.swing.JButton btnOpenEnrollment;
     private javax.swing.JButton btnProfilesBack;
     private javax.swing.JButton btnProfilesEdit;
@@ -656,7 +558,7 @@ private TableRowSorter<TableModel> sorter;
     private javax.swing.JButton btnStudentTranscript;
     private javax.swing.JButton btnStudentViewRanking;
     private javax.swing.JButton btnTuitionBack;
-    private javax.swing.JComboBox<String> cboCourse;
+    private javax.swing.JButton btnUpdate;
     private javax.swing.JComboBox<String> cboCourses;
     private javax.swing.JComboBox<String> cboReportSemester;
     private javax.swing.JComboBox<String> cboReportsCourse;
@@ -670,13 +572,6 @@ private TableRowSorter<TableModel> sorter;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
-    private javax.swing.JLabel lblCourse;
-    private javax.swing.JLabel lblCourseCapacity;
-    private javax.swing.JLabel lblCourseDescription;
-    private javax.swing.JLabel lblCourseRoom;
-    private javax.swing.JLabel lblCourseSyllabus;
-    private javax.swing.JLabel lblCourseTime;
-    private javax.swing.JLabel lblCourseTitle;
     private javax.swing.JLabel lblProfileFacultyID;
     private javax.swing.JLabel lblProfilesDepartment;
     private javax.swing.JLabel lblProfilesEmail;
@@ -690,12 +585,6 @@ private TableRowSorter<TableModel> sorter;
     private javax.swing.JTable tblCourses;
     private javax.swing.JTable tblReports;
     private javax.swing.JScrollPane tblTuition;
-    private javax.swing.JTextField txtCourseCapacity;
-    private javax.swing.JTextField txtCourseDescription;
-    private javax.swing.JTextField txtCourseRoom;
-    private javax.swing.JTextField txtCourseSyllabus;
-    private javax.swing.JTextField txtCourseTime;
-    private javax.swing.JTextField txtCourseTitle;
     private javax.swing.JTextField txtProfileName;
     private javax.swing.JTextField txtProfileOfficeHrs;
     private javax.swing.JTextField txtProfilesDepatment;
@@ -703,4 +592,50 @@ private TableRowSorter<TableModel> sorter;
     private javax.swing.JTextField txtProfilesFacultyID;
     private javax.swing.JTextField txtProfilesPhone;
     // End of variables declaration//GEN-END:variables
+
+    private void initAfterGui() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    private void setEnrollment(boolean b) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    private void initCourseTableModel() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    private void loadCourseCombo() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    private void refreshCoursesTable() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    private void saveDetails() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    private void saveSyllabus() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    private Course findCourse(String id) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    private void loadCourseIntoFields(Course c) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    private void selectCourseFromCombo() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    private static class Course {
+
+        public Course() {
+        }
+    }
 }

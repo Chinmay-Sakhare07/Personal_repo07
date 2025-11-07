@@ -11,7 +11,7 @@
 package UserInterface.WorkAreas.FacultyRole;
 
 import Business.Business;
-import UserInterface.WorkAreas.AdminRole.ManagePersonnelWorkResp.ManagePersonsJPanel;
+import Business.Profiles.FacultyProfile;
 import javax.swing.JPanel;
 
 /**
@@ -33,6 +33,10 @@ public class FacultyWorkAreaJPanel extends javax.swing.JPanel {
         this.CardSequencePanel = clp;
         initComponents();
 
+    }
+
+    public FacultyWorkAreaJPanel(Business business, FacultyProfile fpp, JPanel CardSequencePanel) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     /**
@@ -71,20 +75,20 @@ public class FacultyWorkAreaJPanel extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(101, 101, 101)
+                .addGap(240, 240, 240)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(729, Short.MAX_VALUE))
+                .addContainerGap(590, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(23, 23, 23)
+                .addGap(99, 99, 99)
                 .addComponent(jLabel1)
                 .addGap(79, 79, 79)
                 .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(250, Short.MAX_VALUE))
+                .addContainerGap(174, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

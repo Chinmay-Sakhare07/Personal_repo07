@@ -12,7 +12,7 @@ import Business.Profiles.StudentProfile;
 
 import Business.UserAccounts.UserAccount;
 import Business.UserAccounts.UserAccountDirectory;
-import UserInterface.WorkArea.AdminRole.AdminWorkAreaPanel;
+import UserInterface.WorkAreas.AdminRole.AdminWorkAreaPanel;
 
 import UserInterface.WorkAreas.FacultyRole.FacultyWorkAreaJPanel;
 import UserInterface.WorkAreas.StudentRole.StudentWorkAreaJPanel;

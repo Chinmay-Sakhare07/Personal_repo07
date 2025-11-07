@@ -2,29 +2,66 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package UserInterface.WorkArea.AdminRole;
+package UserInterface.WorkAreas.AdminRole;
 
-import Business.Business;
-import UserInterface.WorkAreas.AdminRole.ManagePersonnelWorkResp.ManagePersonsJPanel;
+
+import java.awt.CardLayout;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import Business.Business;
+
+
 
 /**
  *
  * @author pranjalpatil
  */
 public class AdminWorkAreaPanel extends javax.swing.JPanel {
+    
+            // ====== [ADDED] shared app context + card container ======
 
-    private JPanel CardSequencePanel;
     private Business business;
+
+    private JPanel cardPanel;
+
+
+
+    // ====== [ADDED] keep a no-arg ctor for NetBeans GUI builder ======
+
+    public AdminWorkAreaPanel() {
+
+        initComponents();          // <-- your NetBeans-generated UI (UNCHANGED)
+
+        
+    }
+
+        public void setContext(Business business, JPanel cardPanel) {
+        this.business = business;
+        this.cardPanel = cardPanel;
+    }
+
+
+
+    // ====== [ADDED] overloaded ctor used by MainFrame ======
 
     /**
      * Creates new form AdminWorkAreaPanel
      */
-    public AdminWorkAreaPanel(Business business, JPanel CardSequencePanel) {
-        initComponents();
+    public AdminWorkAreaPanel(Business business, JPanel cardPanel) {
+        
+          this();                    // calls initComponents() + safePostInit()
+
         this.business = business;
-        this.CardSequencePanel = CardSequencePanel;
+
+        this.cardPanel = cardPanel;
+
+
+
+        // optional: show app name on the header if the label exists
+
+
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -40,6 +77,7 @@ public class AdminWorkAreaPanel extends javax.swing.JPanel {
         btnMngAcc = new javax.swing.JButton();
         btnLogout = new javax.swing.JButton();
         lblWelcomeAdmin = new javax.swing.JLabel();
+        btnMngUsers = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(0, 102, 102));
 
@@ -104,79 +142,135 @@ public class AdminWorkAreaPanel extends javax.swing.JPanel {
         lblWelcomeAdmin.setForeground(new java.awt.Color(0, 255, 255));
         lblWelcomeAdmin.setText("Welcome Admin!!");
 
+        btnMngUsers.setBackground(new java.awt.Color(0, 255, 255));
+        btnMngUsers.setFont(new java.awt.Font("Helvetica Neue", 1, 12)); // NOI18N
+        btnMngUsers.setForeground(new java.awt.Color(0, 102, 102));
+        btnMngUsers.setText("Manage Users");
+        btnMngUsers.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnMngUsers.setMaximumSize(new java.awt.Dimension(200, 40));
+        btnMngUsers.setMinimumSize(new java.awt.Dimension(20, 23));
+        btnMngUsers.setPreferredSize(new java.awt.Dimension(240, 30));
+        btnMngUsers.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMngUsersIdentifyResourceAssetsActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(163, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(lblWelcomeAdmin)
-                        .addGap(279, 279, 279))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnMngPersons, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(75, 75, 75)
-                                .addComponent(btnMngAcc, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(120, 120, 120)
-                                .addComponent(btnMngCourses, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(153, 153, 153))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(291, 291, 291))))
+                .addGap(380, 380, 380)
+                .addComponent(lblWelcomeAdmin))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(290, 290, 290)
+                .addComponent(btnMngPersons, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(120, 120, 120)
+                .addComponent(btnMngAcc, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(290, 290, 290)
+                .addComponent(btnMngUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(120, 120, 120)
+                .addComponent(btnMngCourses, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(420, 420, 420)
+                .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(56, 56, 56)
+                .addGap(80, 80, 80)
                 .addComponent(lblWelcomeAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(112, 112, 112)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnMngAcc, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnMngPersons, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(73, 73, 73)
-                .addComponent(btnMngCourses, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(56, 56, 56)
-                .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(217, Short.MAX_VALUE))
+                .addGap(90, 90, 90)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnMngPersons, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnMngAcc, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(62, 62, 62)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnMngUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnMngCourses, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(72, 72, 72)
+                .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+     
+
+    
     private void btnMngPersonsIdentifyResourceAssetsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMngPersonsIdentifyResourceAssetsActionPerformed
-        // TODO add your handling code here:
-
-        //ManageUserAccountsJPanel aos = new ManageUserAccountsJPanel(business, CardSequencePanel);
-
-//        CardSequencePanel.add("ManageVulns", aos);
-//        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
+        
+    ManagePersonsJPanel next = new ManagePersonsJPanel(business, cardPanel);
+        
+        showCard(new ManagePersonsJPanel(business, cardPanel), "ManagePersons");
     }//GEN-LAST:event_btnMngPersonsIdentifyResourceAssetsActionPerformed
 
     private void btnMngCoursesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMngCoursesActionPerformed
 
+        ManageCoursePanel next = new ManageCoursePanel(business, cardPanel);
+        showCard(new ManageCoursePanel(business, cardPanel), "ManageCourses");
     }//GEN-LAST:event_btnMngCoursesActionPerformed
 
     private void btnMngAccActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMngAccActionPerformed
-        // TODO add your handling code here:
 
-        ManagePersonsJPanel aos = new ManagePersonsJPanel(business, CardSequencePanel);
+            ManageStudentRecordsPanel next = new ManageStudentRecordsPanel(business, cardPanel);
+        showCard(new ManageStudentRecordsPanel(business, cardPanel), "ManageStudentsRecord");
 
-        CardSequencePanel.add("Manage Persons", aos);
-        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
+ 
+
     }//GEN-LAST:event_btnMngAccActionPerformed
 
     private void btnLogoutIdentifyEventsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutIdentifyEventsActionPerformed
+             JOptionPane.showMessageDialog(this,
 
+            "Logged out successfully!");
+
+    
     }//GEN-LAST:event_btnLogoutIdentifyEventsActionPerformed
 
+    private void btnMngUsersIdentifyResourceAssetsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMngUsersIdentifyResourceAssetsActionPerformed
+    ManageUserAccountsJPanel next = new ManageUserAccountsJPanel(business, cardPanel);
+        showCard(new ManageUserAccountsJPanel(business, cardPanel), "ManageUsers");
+    }//GEN-LAST:event_btnMngUsersIdentifyResourceAssetsActionPerformed
+
+    
+     private void showCard(javax.swing.JPanel panel, String name) {
+
+        if (cardPanel == null) {
+
+            JOptionPane.showMessageDialog(this,
+
+                "Card container not set. Make sure MainFrame creates this panel with (business, cardPanel).");
+
+            return;
+
+        }
+
+        if (!(cardPanel.getLayout() instanceof CardLayout)) {
+
+            JOptionPane.showMessageDialog(this,
+
+                "Parent container must use CardLayout. Please check MainFrame.");
+
+            return;
+
+        }
+
+        cardPanel.add(name, panel);
+
+        ((CardLayout) cardPanel.getLayout()).show(cardPanel, name);
+
+    }
+
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnMngAcc;
     private javax.swing.JButton btnMngCourses;
     private javax.swing.JButton btnMngPersons;
+    private javax.swing.JButton btnMngUsers;
     private javax.swing.JLabel lblWelcomeAdmin;
     // End of variables declaration//GEN-END:variables
+
 }

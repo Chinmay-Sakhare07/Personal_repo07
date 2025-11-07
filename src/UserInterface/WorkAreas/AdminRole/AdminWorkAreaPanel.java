@@ -55,7 +55,7 @@ public class AdminWorkAreaPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         btnMngPersons = new javax.swing.JButton();
-        btnMngCourses = new javax.swing.JButton();
+        btnAnalytics = new javax.swing.JButton();
         btnMngAcc = new javax.swing.JButton();
         btnLogout = new javax.swing.JButton();
         lblWelcomeAdmin = new javax.swing.JLabel();
@@ -78,17 +78,17 @@ public class AdminWorkAreaPanel extends javax.swing.JPanel {
             }
         });
 
-        btnMngCourses.setBackground(new java.awt.Color(204, 255, 255));
-        btnMngCourses.setFont(new java.awt.Font("Helvetica Neue", 1, 12)); // NOI18N
-        btnMngCourses.setForeground(new java.awt.Color(0, 102, 102));
-        btnMngCourses.setText("Manage Courses");
-        btnMngCourses.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        btnMngCourses.setMaximumSize(new java.awt.Dimension(200, 40));
-        btnMngCourses.setMinimumSize(new java.awt.Dimension(20, 20));
-        btnMngCourses.setPreferredSize(new java.awt.Dimension(240, 25));
-        btnMngCourses.addActionListener(new java.awt.event.ActionListener() {
+        btnAnalytics.setBackground(new java.awt.Color(204, 255, 255));
+        btnAnalytics.setFont(new java.awt.Font("Helvetica Neue", 1, 12)); // NOI18N
+        btnAnalytics.setForeground(new java.awt.Color(0, 102, 102));
+        btnAnalytics.setText("Analytics");
+        btnAnalytics.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnAnalytics.setMaximumSize(new java.awt.Dimension(200, 40));
+        btnAnalytics.setMinimumSize(new java.awt.Dimension(20, 20));
+        btnAnalytics.setPreferredSize(new java.awt.Dimension(240, 25));
+        btnAnalytics.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMngCoursesActionPerformed(evt);
+                btnAnalyticsActionPerformed(evt);
             }
         });
 
@@ -153,7 +153,7 @@ public class AdminWorkAreaPanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnMngUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(120, 120, 120)
-                        .addComponent(btnMngCourses, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnAnalytics, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(130, 130, 130)
                         .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -175,7 +175,7 @@ public class AdminWorkAreaPanel extends javax.swing.JPanel {
                 .addGap(62, 62, 62)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnMngUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnMngCourses, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnAnalytics, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(72, 72, 72)
                 .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -192,11 +192,13 @@ public class AdminWorkAreaPanel extends javax.swing.JPanel {
         cardPanel.repaint();
     }//GEN-LAST:event_btnMngPersonsIdentifyResourceAssetsActionPerformed
 
-    private void btnMngCoursesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMngCoursesActionPerformed
-
-        ManageCoursePanel next = new ManageCoursePanel(business, cardPanel);
-        showCard(new ManageCoursePanel(business, cardPanel), "ManageCourses");
-    }//GEN-LAST:event_btnMngCoursesActionPerformed
+    private void btnAnalyticsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnalyticsActionPerformed
+        DashboardPanel panel = new DashboardPanel(business, cardPanel);
+        cardPanel.add(panel, "AnalyticsDashboard");
+        ((java.awt.CardLayout) cardPanel.getLayout()).show(cardPanel, "AnalyticsDashboard");
+        cardPanel.revalidate();
+        cardPanel.repaint();
+    }//GEN-LAST:event_btnAnalyticsActionPerformed
 
     private void btnMngAccActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMngAccActionPerformed
         ManageStudentRecordsJPanel panel = new ManageStudentRecordsJPanel(business, cardPanel);
@@ -255,9 +257,9 @@ public class AdminWorkAreaPanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAnalytics;
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnMngAcc;
-    private javax.swing.JButton btnMngCourses;
     private javax.swing.JButton btnMngPersons;
     private javax.swing.JButton btnMngUsers;
     private javax.swing.JLabel lblWelcomeAdmin;

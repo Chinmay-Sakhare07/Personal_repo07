@@ -110,7 +110,7 @@
           <SubComponents>
             <Component class="javax.swing.JButton" name="btnOpenEnrollment">
               <Properties>
-                <Property name="text" type="java.lang.String" value="open Enrolment"/>
+                <Property name="text" type="java.lang.String" value="Open Enrolment"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnOpenEnrollmentActionPerformed"/>

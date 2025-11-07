@@ -10,11 +10,6 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.util.List;
-import java.util.regex.Pattern;
 
 
 
@@ -106,7 +101,7 @@ private TableRowSorter<TableModel> sorter;
 
         jPanelCourses.setBackground(new java.awt.Color(0, 153, 153));
 
-        btnOpenEnrollment.setText("open Enrolment");
+        btnOpenEnrollment.setText("Open Enrolment");
         btnOpenEnrollment.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnOpenEnrollmentActionPerformed(evt);

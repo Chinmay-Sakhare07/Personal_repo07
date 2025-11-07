@@ -9,11 +9,14 @@ import Business.Business;
 import Business.Course.Course;
 import Business.Course.CourseOffering;
 import Business.Course.Enrollment;
+import Business.CourseWork.Assignment;
+import Business.CourseWork.Submission;
 import Business.Department.Department;
 import Business.Person.Person;
 import Business.Profiles.EmployeeProfile;
 import Business.Profiles.FacultyProfile;
 import Business.Profiles.StudentProfile;
+import java.text.SimpleDateFormat;
 
 /**
  *
@@ -23,7 +26,7 @@ class ConfigureABusiness {
 
     static Business initialize() {
         Business business = new Business("Northeastern University");
-        
+
         Department coe = business.getDepartmentDirectory().newDepartment("COE", "College of Engineering");
 
         Person adminPerson = business.getPersonDirectory().newPerson(
@@ -34,7 +37,6 @@ class ConfigureABusiness {
         EmployeeProfile adminProfile = business.getEmployeeDirectory().newEmployeeProfile(adminPerson);
         business.getUserAccountDirectory().newUserAccount(adminProfile, "admin", "admin");
 
-        
         String[] facultyFirstNames = {"Anisha", "Sarah", "Michael", "Emily", "David",
             "Jennifer", "Robert", "Lisa", "James", "Mary"};
         String[] facultyLastNames = {"Gaikar", "Johnson", "Williams", "Brown", "Jones",
@@ -64,7 +66,6 @@ class ConfigureABusiness {
             );
         }
 
-        
         Course[] courses = new Course[5];
         courses[0] = new Course("INFO5100", "Application Engineering and Development",
                 "Learn Java and enterprise development", 4);
@@ -77,7 +78,6 @@ class ConfigureABusiness {
         courses[4] = new Course("INFO6350", "Smartphones Based Web Development",
                 "Mobile app development", 4);
 
-        
         String semester = "Fall 2025";
         CourseOffering[] offerings = new CourseOffering[5];
 
@@ -93,7 +93,6 @@ class ConfigureABusiness {
             facultyProfiles[i].addCourseOffering(offerings[i]);
         }
 
-        
         String[] studentFirstNames = {"Chinmay", "Shreya", "Agnel", "Pranav", "Rutuj",
             "Swapnil", "Atul", "Pragati", "Vartika", "Parth"};
         String[] studentLastNames = {"Sakhare", "Darban", "Salve", "Waghmare", "Bhise",
@@ -135,30 +134,105 @@ class ConfigureABusiness {
         enrollStudentInCourse(studentProfiles[7], offerings[1]); // INFO6205
         enrollStudentInCourse(studentProfiles[7], offerings[2]); // INFO6150
 
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+
+            Assignment a1 = new Assignment(
+                    "INFO5100_A1",
+                    "Homework 1 - Java Basics",
+                    "Complete exercises on Java fundamentals",
+                    sdf.parse("11/15/2024"),
+                    100,
+                    offerings[0]
+            );
+            offerings[0].addAssignment(a1);
+
+            Assignment a2 = new Assignment(
+                    "INFO5100_A2",
+                    "Project 1 - Swing Application",
+                    "Build a Java Swing application",
+                    sdf.parse("11/25/2024"),
+                    150,
+                    offerings[0]
+            );
+            offerings[0].addAssignment(a2);
+
+            Assignment a3 = new Assignment(
+                    "INFO5100_A3",
+                    "Quiz 1 - OOP Concepts",
+                    "Online quiz covering chapters 1-5",
+                    sdf.parse("12/05/2024"),
+                    50,
+                    offerings[0]
+            );
+            offerings[0].addAssignment(a3);
+
+            // Add assignments to INFO6205 (offerings[1])
+            Assignment a4 = new Assignment(
+                    "INFO6205_A1",
+                    "Homework 1 - Sorting Algorithms",
+                    "Implement various sorting algorithms",
+                    sdf.parse("11/18/2024"),
+                    100,
+                    offerings[1]
+            );
+            offerings[1].addAssignment(a4);
+
+            Assignment a5 = new Assignment(
+                    "INFO6205_A2",
+                    "Project 1 - Data Structures",
+                    "Implement custom data structures",
+                    sdf.parse("11/28/2024"),
+                    150,
+                    offerings[1]
+            );
+            offerings[1].addAssignment(a5);
+
+            Submission sub1 = new Submission(studentProfiles[0], a1);
+            sub1.setSubmissionDate(sdf.parse("11/14/2024"));
+            a1.addSubmission(sub1);
+
+            // Student 1 (Bob) submitted and already graded
+            Submission sub2 = new Submission(studentProfiles[1], a1);
+            sub2.setSubmissionDate(sdf.parse("11/13/2024"));
+            sub2.setPointsEarned(85);
+            sub2.setFeedback("Good work! Some minor issues with error handling.");
+            sub2.setStatus("Graded");
+            a1.addSubmission(sub2);
+
+            // Student 2 (Charlie) submitted and already graded
+            Submission sub3 = new Submission(studentProfiles[2], a1);
+            sub3.setSubmissionDate(sdf.parse("11/12/2024"));
+            sub3.setPointsEarned(92);
+            sub3.setFeedback("Excellent understanding of concepts!");
+            sub3.setStatus("Graded");
+            a1.addSubmission(sub3);
+
+        } catch (Exception e) {
+        }
 
         if (offerings[0].getEnrollments().size() > 0) {
-            offerings[0].getEnrollments().get(0).assignGrade("A");   // Student 0
+            offerings[0].getEnrollments().get(0).assignGrade("A");
         }
         if (offerings[0].getEnrollments().size() > 1) {
-            offerings[0].getEnrollments().get(1).assignGrade("A-");  // Student 1
+            offerings[0].getEnrollments().get(1).assignGrade("A-");
         }
         if (offerings[0].getEnrollments().size() > 2) {
-            offerings[0].getEnrollments().get(2).assignGrade("B+");  // Student 2
+            offerings[0].getEnrollments().get(2).assignGrade("B+");
         }
 
         // Give grades in INFO6205
         if (offerings[1].getEnrollments().size() > 0) {
-            offerings[1].getEnrollments().get(0).assignGrade("B");   // Student 0
+            offerings[1].getEnrollments().get(0).assignGrade("B");
         }
         if (offerings[1].getEnrollments().size() > 1) {
-            offerings[1].getEnrollments().get(1).assignGrade("B+");  // Student 1
+            offerings[1].getEnrollments().get(1).assignGrade("B+");
         }
 
         studentProfiles[0].getAccount().makePayment(8000.0); // Paid full tuition for 2 courses
         studentProfiles[1].getAccount().makePayment(4000.0); // Partial payment
         studentProfiles[2].getAccount().makePayment(8000.0); // Paid full
 
-        
         for (int i = 0; i < 9; i++) {
             business.getPersonDirectory().newPerson(
                     "PER" + String.format("%03d", i + 1),
@@ -171,7 +245,7 @@ class ConfigureABusiness {
 
         return business;
     }
-    
+
     private static void enrollStudentInCourse(StudentProfile student, CourseOffering offering) {
         Enrollment enrollment = new Enrollment(student, offering);
         boolean success = offering.enrollStudent(enrollment);

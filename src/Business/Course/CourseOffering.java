@@ -4,6 +4,7 @@
  */
 package Business.Course;
 
+import Business.CourseWork.Assignment;
 import Business.Profiles.FacultyProfile;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,6 +22,7 @@ public class CourseOffering {
     private int capacity;
     private boolean enrollmentOpen;
     private ArrayList<Enrollment> enrollments;
+    private ArrayList<Assignment> assignments;
 
     public CourseOffering(Course course, String semester, FacultyProfile faculty, int capacity, boolean enrollmentOpen) {
         this.course = course;
@@ -29,6 +31,7 @@ public class CourseOffering {
         this.capacity = capacity;
         this.enrollmentOpen = enrollmentOpen;
         this.enrollments = new ArrayList<>();
+        this.assignments = new ArrayList<>();
     }
 
     public boolean isEnrollmentOpen() {
@@ -93,7 +96,7 @@ public class CourseOffering {
     public double calculateTotalTuitionCollected() {
         double total = 0.0;
         int creditHours = course.getCreditHours();
-        double tuitionPerCredit = 1000.0; // $1000 per credit hour
+        double tuitionPerCredit = 1000.0;
 
         for (Enrollment e : enrollments) {
             if (!e.getStatus().equalsIgnoreCase("Dropped")) {
@@ -171,5 +174,26 @@ public class CourseOffering {
 
     public int getAvailableSeats() {
         return capacity - getActiveEnrollmentCount();
+    }
+
+    public void addAssignment(Assignment assignment) {
+        assignments.add(assignment);
+    }
+
+    public ArrayList<Assignment> getAssignments() {
+        return assignments;
+    }
+
+    public Assignment findAssignment(String assignmentId) {
+        for (Assignment a : assignments) {
+            if (a.getAssignmentId().equals(assignmentId)) {
+                return a;
+            }
+        }
+        return null;
+    }
+    
+    public boolean removeAssignment(Assignment assignment) {
+        return assignments.remove(assignment);
     }
 }

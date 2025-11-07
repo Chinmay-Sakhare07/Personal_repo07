@@ -2,14 +2,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package UserInterface.WorkAreas.AdminRole;
+package UserInterface.WorkArea.AdminRole;
 
 
 import java.awt.CardLayout;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import Business.Business;
-
+import UserInterface.WorkArea.AdminRole.ManageStudentRecords;
+import UserInterface.WorkArea.AdminRole.ManagePersonsPanel;
+import UserInterface.WorkArea.AdminRole.ManageCoursePanel;
 
 
 /**
@@ -79,9 +81,10 @@ public class AdminWorkAreaPanel extends javax.swing.JPanel {
         lblWelcomeAdmin = new javax.swing.JLabel();
         btnMngUsers = new javax.swing.JButton();
 
-        setBackground(new java.awt.Color(0, 102, 102));
+        setBackground(new java.awt.Color(0, 204, 204));
+        setPreferredSize(new java.awt.Dimension(800, 600));
 
-        btnMngPersons.setBackground(new java.awt.Color(0, 255, 255));
+        btnMngPersons.setBackground(new java.awt.Color(204, 255, 255));
         btnMngPersons.setFont(new java.awt.Font("Helvetica Neue", 1, 12)); // NOI18N
         btnMngPersons.setForeground(new java.awt.Color(0, 102, 102));
         btnMngPersons.setText("Manage Persons");
@@ -95,7 +98,7 @@ public class AdminWorkAreaPanel extends javax.swing.JPanel {
             }
         });
 
-        btnMngCourses.setBackground(new java.awt.Color(0, 255, 255));
+        btnMngCourses.setBackground(new java.awt.Color(204, 255, 255));
         btnMngCourses.setFont(new java.awt.Font("Helvetica Neue", 1, 12)); // NOI18N
         btnMngCourses.setForeground(new java.awt.Color(0, 102, 102));
         btnMngCourses.setText("Manage Courses");
@@ -109,10 +112,10 @@ public class AdminWorkAreaPanel extends javax.swing.JPanel {
             }
         });
 
-        btnMngAcc.setBackground(new java.awt.Color(0, 255, 255));
+        btnMngAcc.setBackground(new java.awt.Color(204, 255, 255));
         btnMngAcc.setFont(new java.awt.Font("Helvetica Neue", 1, 12)); // NOI18N
         btnMngAcc.setForeground(new java.awt.Color(0, 102, 102));
-        btnMngAcc.setText("Manage Accounts");
+        btnMngAcc.setText("Manage Students");
         btnMngAcc.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnMngAcc.setMaximumSize(new java.awt.Dimension(200, 40));
         btnMngAcc.setMinimumSize(new java.awt.Dimension(20, 20));
@@ -123,7 +126,7 @@ public class AdminWorkAreaPanel extends javax.swing.JPanel {
             }
         });
 
-        btnLogout.setBackground(new java.awt.Color(0, 255, 255));
+        btnLogout.setBackground(new java.awt.Color(204, 255, 255));
         btnLogout.setFont(new java.awt.Font("Helvetica Neue", 1, 12)); // NOI18N
         btnLogout.setForeground(new java.awt.Color(0, 102, 102));
         btnLogout.setText("Logout");
@@ -139,10 +142,10 @@ public class AdminWorkAreaPanel extends javax.swing.JPanel {
 
         lblWelcomeAdmin.setBackground(new java.awt.Color(0, 255, 255));
         lblWelcomeAdmin.setFont(new java.awt.Font("American Typewriter", 1, 18)); // NOI18N
-        lblWelcomeAdmin.setForeground(new java.awt.Color(0, 255, 255));
+        lblWelcomeAdmin.setForeground(new java.awt.Color(0, 102, 102));
         lblWelcomeAdmin.setText("Welcome Admin!!");
 
-        btnMngUsers.setBackground(new java.awt.Color(0, 255, 255));
+        btnMngUsers.setBackground(new java.awt.Color(204, 255, 255));
         btnMngUsers.setFont(new java.awt.Font("Helvetica Neue", 1, 12)); // NOI18N
         btnMngUsers.setForeground(new java.awt.Color(0, 102, 102));
         btnMngUsers.setText("Manage Users");
@@ -160,29 +163,32 @@ public class AdminWorkAreaPanel extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(205, 205, 205)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnMngPersons, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(120, 120, 120)
+                        .addComponent(btnMngAcc, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnMngUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(120, 120, 120)
+                        .addComponent(btnMngCourses, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(130, 130, 130)
+                        .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(209, 209, 209))
             .addGroup(layout.createSequentialGroup()
-                .addGap(380, 380, 380)
-                .addComponent(lblWelcomeAdmin))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(290, 290, 290)
-                .addComponent(btnMngPersons, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(120, 120, 120)
-                .addComponent(btnMngAcc, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(290, 290, 290)
-                .addComponent(btnMngUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(120, 120, 120)
-                .addComponent(btnMngCourses, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(420, 420, 420)
-                .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(311, 311, 311)
+                .addComponent(lblWelcomeAdmin)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(80, 80, 80)
+                .addGap(113, 113, 113)
                 .addComponent(lblWelcomeAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(90, 90, 90)
+                .addGap(49, 49, 49)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnMngPersons, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnMngAcc, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -191,7 +197,8 @@ public class AdminWorkAreaPanel extends javax.swing.JPanel {
                     .addComponent(btnMngUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnMngCourses, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(72, 72, 72)
-                .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -200,9 +207,9 @@ public class AdminWorkAreaPanel extends javax.swing.JPanel {
     
     private void btnMngPersonsIdentifyResourceAssetsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMngPersonsIdentifyResourceAssetsActionPerformed
         
-    ManagePersonsJPanel next = new ManagePersonsJPanel(business, cardPanel);
+    ManagePersonsPanel next = new ManagePersonsPanel(business, cardPanel);
         
-        showCard(new ManagePersonsJPanel(business, cardPanel), "ManagePersons");
+        showCard(new ManagePersonsPanel(business, cardPanel), "ManagePersons");
     }//GEN-LAST:event_btnMngPersonsIdentifyResourceAssetsActionPerformed
 
     private void btnMngCoursesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMngCoursesActionPerformed
@@ -213,8 +220,8 @@ public class AdminWorkAreaPanel extends javax.swing.JPanel {
 
     private void btnMngAccActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMngAccActionPerformed
 
-            ManageStudentRecordsPanel next = new ManageStudentRecordsPanel(business, cardPanel);
-        showCard(new ManageStudentRecordsPanel(business, cardPanel), "ManageStudentsRecord");
+            ManageStudentRecords next = new ManageStudentRecords(business, cardPanel);
+        showCard(new ManageStudentRecords(business, cardPanel), "ManageStudentsRecord");
 
  
 

@@ -13,6 +13,7 @@ package UserInterface.WorkAreas.StudentRole;
 import Business.Business;
 import Business.Profiles.StudentProfile;
 import java.awt.CardLayout;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -21,9 +22,10 @@ import javax.swing.JPanel;
  */
 public class StudentWorkAreaJPanel extends javax.swing.JPanel {
 
-    javax.swing.JPanel CardSequencePanel;
-    Business business;
-    StudentProfile student;
+    private Business business;
+    private StudentProfile studentProfile;
+    private JPanel cardSequencePanel;
+    private JPanel currentPanel;
 
     /**
      * Creates new form UnitRiskWorkArea
@@ -32,13 +34,12 @@ public class StudentWorkAreaJPanel extends javax.swing.JPanel {
      * @param spp
      * @param clp
      */
-    public StudentWorkAreaJPanel(Business b, StudentProfile spp, JPanel clp) {
-
-        business = b;
-        this.CardSequencePanel = clp;
-        student = spp;
+    public StudentWorkAreaJPanel(Business business, StudentProfile studentProfile, JPanel cardSequencePanel) {
+        this.business = business;
+        this.studentProfile = studentProfile;
+        this.cardSequencePanel = cardSequencePanel;
         initComponents();
-
+        lblTitle.setText("Welcome, " + studentProfile.getPerson().getFullName() + "!");
     }
 
     /**
@@ -201,41 +202,77 @@ public class StudentWorkAreaJPanel extends javax.swing.JPanel {
 
     private void btnCourseManagementIdentifyResourceAssetsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCourseManagementIdentifyResourceAssetsActionPerformed
 
+        CourseWorkManagementJPanel panel = new CourseWorkManagementJPanel(business, studentProfile, cardSequencePanel);
+        navigateToPanel(panel, "CourseWorkManagement");
 
     }//GEN-LAST:event_btnCourseManagementIdentifyResourceAssetsActionPerformed
 
     private void btnManageProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageProfileActionPerformed
-        // TODO add your handling code here:
-
-
+        ManageProfileJPanel panel = new ManageProfileJPanel(business, studentProfile, cardSequencePanel);
+        navigateToPanel(panel, "ManageProfile");
 }//GEN-LAST:event_btnManageProfileActionPerformed
 
     private void btnGraduationAuditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGraduationAuditActionPerformed
-        // TODO add your handling code here:
-
-
+        GraduationAuditJPanel panel = new GraduationAuditJPanel(business, studentProfile, cardSequencePanel);
+        navigateToPanel(panel, "GraduationAudit");
     }//GEN-LAST:event_btnGraduationAuditActionPerformed
 
     private void btnCourseRegistrationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCourseRegistrationActionPerformed
-        CourseRegistrationJPanel crPanel = new CourseRegistrationJPanel(CardSequencePanel, student, business);
-        CardSequencePanel.add("CourseRegistrationJPanel", crPanel);
-        CardLayout layout = (CardLayout) CardSequencePanel.getLayout();
-        layout.show(CardSequencePanel, "CourseRegistrationJPanel");
+        CourseRegistrationJPanel panel = new CourseRegistrationJPanel(business, studentProfile, cardSequencePanel);
+        navigateToPanel(panel, "CourseRegistration");
 }//GEN-LAST:event_btnCourseRegistrationActionPerformed
 
     private void btnTranscriptReviewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTranscriptReviewActionPerformed
-        // TODO add your handling code here:
+        double balance = studentProfile.getAccount().getOutstandingBalance();
+
+        if (balance > 0) {
+            JOptionPane.showMessageDialog(this,
+                    "You cannot view your transcript until all tuition is paid.\n"
+                    + "Outstanding Balance: $" + String.format("%.2f", balance),
+                    "Transcript Access Denied",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        TranscriptReviewJPanel panel = new TranscriptReviewJPanel(business, studentProfile, cardSequencePanel);
+        navigateToPanel(panel, "TranscriptReview");
     }//GEN-LAST:event_btnTranscriptReviewActionPerformed
 
     private void btnFinancialManagementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinancialManagementActionPerformed
-        // TODO add your handling code here:
+        PayTuitionJPanel panel = new PayTuitionJPanel(business, studentProfile, cardSequencePanel);
+        navigateToPanel(panel, "PayTuition");
     }//GEN-LAST:event_btnFinancialManagementActionPerformed
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
-        // TODO add your handling code here:
+        int response = JOptionPane.showConfirmDialog(this,
+                "Are you sure you want to logout?",
+                "Confirm Logout",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+
+        if (response == JOptionPane.YES_OPTION) {
+            cardSequencePanel.removeAll();
+
+            javax.swing.JLabel welcomeLabel = new javax.swing.JLabel();
+            welcomeLabel.setFont(new java.awt.Font("Dialog", 0, 24));
+            welcomeLabel.setForeground(new java.awt.Color(102, 153, 255));
+            welcomeLabel.setText("Education Going Digital .... Info 5100");
+            welcomeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+            cardSequencePanel.add(welcomeLabel, "welcome");
+            ((java.awt.CardLayout) cardSequencePanel.getLayout()).show(cardSequencePanel, "welcome");
+
+            cardSequencePanel.revalidate();
+            cardSequencePanel.repaint();
+        }
     }//GEN-LAST:event_btnLogoutActionPerformed
 
-
+    private void navigateToPanel(JPanel panel, String panelName) {
+        cardSequencePanel.add(panel, panelName);
+        ((java.awt.CardLayout) cardSequencePanel.getLayout()).show(cardSequencePanel, panelName);
+        cardSequencePanel.revalidate();
+        cardSequencePanel.repaint();
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCourseManagement;
     private javax.swing.JButton btnCourseRegistration;

@@ -4,6 +4,10 @@
  */
 package UserInterface.WorkAreas.StudentRole;
 
+import Business.Business;
+import Business.Profiles.StudentProfile;
+import javax.swing.JPanel;
+
 /**
  *
  * @author chinm
@@ -13,7 +17,7 @@ public class GraduationAuditJPanel extends javax.swing.JPanel {
     /**
      * Creates new form GraduationAuditJPanel
      */
-    public GraduationAuditJPanel() {
+    public GraduationAuditJPanel(Business business, StudentProfile studentProfile, JPanel cardSequencePanel) {
         initComponents();
     }
 

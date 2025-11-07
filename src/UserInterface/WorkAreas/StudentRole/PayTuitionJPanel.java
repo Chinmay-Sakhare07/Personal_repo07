@@ -4,16 +4,20 @@
  */
 package UserInterface.WorkAreas.StudentRole;
 
+import Business.Business;
+import Business.Profiles.StudentProfile;
+import javax.swing.JPanel;
+
 /**
  *
  * @author chinm
  */
-public class CourseWorkManagementJPanell extends javax.swing.JPanel {
+public class PayTuitionJPanel extends javax.swing.JPanel {
 
     /**
-     * Creates new form CourseWorkManagementJPanell
+     * Creates new form PayTutionJPanel
      */
-    public CourseWorkManagementJPanell() {
+    public PayTuitionJPanel(Business business, StudentProfile studentProfile, JPanel cardSequencePanel) {
         initComponents();
     }
 

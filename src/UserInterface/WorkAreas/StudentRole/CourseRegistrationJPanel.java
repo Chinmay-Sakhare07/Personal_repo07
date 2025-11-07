@@ -25,17 +25,16 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
      * Creates new form CourseRegistrationJPanel
      */
     private ArrayList<CourseOffering> allOfferings;
-    private StudentProfile student;
+    private StudentProfile studentProfile;
     private JPanel cardSequencePanel;
     private Business business;
 
-    public CourseRegistrationJPanel(JPanel cardSequencePanel, StudentProfile student, Business business) {
-        initComponents();
-        this.student = student;
-        this.cardSequencePanel = cardSequencePanel;
-        this.allOfferings = new ArrayList<>();
+    CourseRegistrationJPanel(Business business, StudentProfile studentProfile, JPanel cardSequencePanel) {
+
         this.business = business;
-        populateTable(allOfferings, business);
+        this.studentProfile = studentProfile;
+        this.cardSequencePanel = cardSequencePanel;
+        initComponents();
     }
 
     /**
@@ -187,21 +186,21 @@ public class CourseRegistrationJPanel extends javax.swing.JPanel {
             return;
         }
 
-        int currentCredits = student.getCurrentTermCredits(co.getSemester());
-        if (currentCredits + co.getCourse().getCreditHours() > 8) {
-            JOptionPane.showMessageDialog(this, "You cannot take more than 8 credits this semester.");
-            return;
-        }
+//        int currentCredits = student.getCurrentTermCredits(co.getSemester());
+//        if (currentCredits + co.getCourse().getCreditHours() > 8) {
+//            JOptionPane.showMessageDialog(this, "You cannot take more than 8 credits this semester.");
+//            return;
+//        }
 
-        Enrollment e = new Enrollment(student, co);
-        boolean success = co.enrollStudent(e);
-
-        if (success) {
-            student.addEnrollment(e);
-            JOptionPane.showMessageDialog(this, "Enrolled successfully in " + co.getCourse().getCourseName());
-        } else {
-            JOptionPane.showMessageDialog(this, "Enrollment failed (capacity full).");
-        }
+//        Enrollment e = new Enrollment(student, co);
+//        boolean success = co.enrollStudent(e);
+//
+//        if (success) {
+//            student.addEnrollment(e);
+//            JOptionPane.showMessageDialog(this, "Enrolled successfully in " + co.getCourse().getCourseName());
+//        } else {
+//            JOptionPane.showMessageDialog(this, "Enrollment failed (capacity full).");
+//        }
     }//GEN-LAST:event_btnEnrollActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed

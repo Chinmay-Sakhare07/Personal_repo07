@@ -31,12 +31,8 @@ private TableRowSorter<TableModel> sorter;
     this.business = business;
     this.cardPanel = CardSequencePanel;
     initComponents();
-    initAfterGui();  // <-- add this line
+    initAfterGui(); 
 }
-
-    
-    
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -513,7 +509,7 @@ private TableRowSorter<TableModel> sorter;
 
     private void btnOpenEnrollmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenEnrollmentActionPerformed
         {  setEnrollment(true);
-}
+        }
     }//GEN-LAST:event_btnOpenEnrollmentActionPerformed
 
     private void txtProfilesDepatmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtProfilesDepatmentActionPerformed

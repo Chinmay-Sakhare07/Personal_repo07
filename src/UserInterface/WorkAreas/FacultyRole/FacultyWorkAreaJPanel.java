@@ -22,6 +22,7 @@ public class FacultyWorkAreaJPanel extends javax.swing.JPanel {
 
     javax.swing.JPanel CardSequencePanel;
     Business business;
+    FacultyProfile fpp;
 
     /**
      * Creates new form UnitRiskWorkArea
@@ -36,7 +37,10 @@ public class FacultyWorkAreaJPanel extends javax.swing.JPanel {
     }
 
     public FacultyWorkAreaJPanel(Business business, FacultyProfile fpp, JPanel CardSequencePanel) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        this.business = business;
+        this.CardSequencePanel = CardSequencePanel;
+        this.fpp = fpp;
+        initComponents();
     }
 
     /**
